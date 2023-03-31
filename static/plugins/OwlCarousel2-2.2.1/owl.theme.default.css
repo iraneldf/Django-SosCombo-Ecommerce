@@ -8,7 +8,6 @@
  */
 .owl-theme .owl-nav
 {
-    margin-top: 10px;
     text-align: center;
     -webkit-tap-highlight-color: transparent;
     z-index: 10000;
@@ -43,6 +42,8 @@
 
 .owl-theme .owl-dots
 {
+    position: relative;
+    bottom: 50px;
     text-align: center;
     -webkit-tap-highlight-color: transparent;
 }
@@ -65,6 +66,6 @@
 }
 .owl-theme .owl-dots .owl-dot.active span, .owl-theme .owl-dots .owl-dot:hover span
 {
-      background: #A19799;
+      background:  #D63B08;
 }
 

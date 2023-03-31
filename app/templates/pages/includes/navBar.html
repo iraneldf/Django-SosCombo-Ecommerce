@@ -38,7 +38,8 @@
             <a href="{% url 'index' %}">
                 <div id="logo">
                     <img class="imagen-logo" src="{{ general.logo.url }}">
-                    <text y="-5%" class="texto-logo" transform="translate(209.74 170.13)">{{ general.nombre }}</text>
+                    <text y="-5%" class="texto-logo" transform="translate(209.74 170.13)">
+                        {{ general.nombre }}</text>
                 </div>
             </a>
         </div>
@@ -111,16 +112,17 @@
                 <!-- Ubicacion -->
                 <label {% if path != 'productos' %} style="display: none" {% endif %}
                                                     onclick="document.getElementById('modal-ubicacion').style.display='block'">
-                    {% if request.session.ubicacion %} {{ request.session.ubicacion }} {% else %}
+                    {% if request.session.ubicacion %} {{ request.session.ubicacion }}  {% else %}
                         Localización... {% endif %}
                 </label>
             </div>
             <div class="navBar__contactar-compra">
 
 
-                <form {% if path != 'productos' %} style="display: none;" {% endif %}  action="#" id="barra-buscar"
+                <form {% if path != 'productos' %} style="display: none;" {% endif %}
+                                                   id="barra-buscar"
                                                    class="barra-escritorio">
-                    <button class="btn-buscar-escritorio" type="button">
+                    <button class="btn-buscar-escritorio" type="submit">
                         <svg class="buscar-icono" xmlns="http://www.w3.org/2000/svg" height="24px"
                              viewBox="0 0 24 24" width="24px" fill="#000000">
                             <path d="M0 0h24v24H0V0z" fill="none"/>
@@ -128,7 +130,8 @@
                                     d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
                         </svg>
                     </button>
-                    <input class="barra-buscar" type="text" {% if path != 'productos' %}
+                    <input class="barra-buscar" name="buscar" value="{{ request.session.buscar }}"
+                           type="text" {% if path != 'productos' %}
                            style="display: none;" {% endif %} >
                 </form>
                 {#//////////////////////////////////////#}
@@ -136,9 +139,13 @@
                 <a href="{% url 'productos' %}"    {% if path != 'productos' %}
                    style="margin-left:10px"  {% endif %} >
                     {% if path == 'productos' %}
-                        <img class="" style="width: 24px" src="{% static 'img/Iconos/icons8-food-donor-50 full.png' %}" alt=""/>
+                        <img class="icono-productos" style="width: 24px"
+                             src="{% static 'img/Iconos/icons8-food-donor-50 full.png' %}"
+                             alt=""/>
                     {% else %}
-                        <img class="" style="width: 24px" src="{% static 'img/Iconos/icons8-food-donor-50.png' %}" alt=""/>
+                        <img class="icono-productos" style="width: 24px"
+                             src="{% static 'img/Iconos/icons8-food-donor-50.png' %}"
+                             alt=""/>
                     {% endif %}
                 </a>
                 <a href="{% url 'carrito' %}"    {% if path != 'productos' %}
@@ -153,9 +160,10 @@
             </div>
         </div>
 
-        <form {% if path != 'productos' %} style="display: none;" {% endif %}   action="#" id="barra-buscar" class="barra-responsive">
+        <form {% if path != 'productos' %} style="display: none;" {% endif %}   action="#" id="barra-buscar"
+                                           class="barra-responsive">
 
-            <button class="btn-buscar" type="button">
+            <button class="btn-buscar" type="submit">
                 <svg class="buscar-icono" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24"
                      width="24px" fill="#000000">
                     <path d="M0 0h24v24H0V0z" fill="none"/>
@@ -163,8 +171,22 @@
                             d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
                 </svg>
             </button>
-            <input class="barra-buscar" type="text">
+            <input class="barra-buscar contact-filter" type="text" name="buscar" value="{{ request.session.buscar }}">
         </form>
 
     </header>
 </section>
+<script>
+    {#window.addEventListener("load", C())#}
+    {#function C() {#}
+    {#    #}
+    {#        var a=0;#}
+    {#        {% if request.session.cart.items %}#}
+    {#            {% for key,value in request.session.cart.items %}#}
+    {#                {{ value.id }}#}
+    {#                a++;#}
+    {#            {% endfor %}#}
+    {#            document.querySelector('.contar-productos-compra ').innerHTML = a;#}
+    {#        {% endif %}#}
+
+</script>

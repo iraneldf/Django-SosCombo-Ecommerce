@@ -1,10 +1,100 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% for p in productos %}
+    <div class="plantilla-producto infinite-item">
+        <div class="producto">
+            <a class="mostrar-producto" href="{% url 'VerProductos' p.id %}">
+                <img class="foto-producto" alt="foto producto" src="{{ p.imagen.url }}"
+                     style="width: 160px; height: 160px">
+            </a>
+            <div class="nombre-precio-producto ">
+                <h4>{{ p.nombre }}</h4>
+                <p>{{ p.precio }}</p>
+            </div>
+
+            <div class="contar-producto">
+                <button class="btn-contar restar" id="id{{ p.id }}" type="button">&minus;</button>
+                <div id="contador" class="id{{ p.id }}">1</div>
+                <button class="btn-contar sumar" id="id{{ p.id }}" type="button">&plus;</button>
+            </div>
+
+            <button
+                    type="button"
+                    class="annadir-carrito btnSimple-carrito__comprar-mas"
+                    id="btnid{{ p.id }}"
+                    onclick="addCarrito({{ p.id }},
+                            document.querySelector('.id{{ p.id }}').textContent)"
+            >
+                AÑADIR
+            </button>
+            <button
+                    onclick="addCarrito({{ p.id }},
+                            document.querySelector('.id{{ p.id }}').textContent);
+                            document.querySelector('.annadir-carrito carrito__comprar-mas').classList.add('animate')"
+                    class="annadir-carrito carrito__comprar-mas" type="button"></button>
+        </div>
+
+    </div>
+
+{% endfor %}
+
+{% if not object_list %}
+    <h3 style="text-align: center">No tenemos productos que coincidan con los filtros aplicados.</h3>
+{% endif %}
+
+<div class="loading" style="display: none;">
+    Loading...
+</div>
+
+{% if page_obj.has_next %}
+    <a class="infinite-more-link" href="?page={{ productos.next_page_number }}">More</a>
+{% endif %}
+
+<script>
+    var infinite = new Waypoint.Infinite({
+        element: $('.infinite-container')[0],
+        onBeforePageLoad: function () {
+            $('.loading').show();
+        },
+        onAfterPageLoad: function ($items) {
+            $('.loading').hide();
+        }
+    });
+</script>
+
+<script>
+
+    function addCarrito(id, quantity) {
+        $.ajax(
+            {
+                url: '{% url 'cartAjax'  %}',
+                type: 'POST',
+                data: {id: id, quantity: quantity},
+                dataType: 'json'
+            }
+        )
+    }
+
+    {#OCULTAR Y MOSTRAR EL BOTON ANNADIR#}
+    window.addEventListener('click', (e) => {
+            if (e.composedPath()[0].classList[0] == 'btn-contar') {
+                const botonAnnadir = document.querySelector(`#btn${e.composedPath()[0].id}`);
+                const contenedor = document.querySelector(`.${e.composedPath()[0].id}`);
+
+                botonAnnadir.classList.remove('ocultar');
+
+                if (e.composedPath()[0].classList[1] == 'restar') {
+                    if (contenedor.textContent == 1 || contenedor.textContent == 0) {
+                        botonAnnadir.classList.add('ocultar')
+                    }
+                } else if (e.composedPath()[0].classList[1] == 'sumar') {
+                    if (contenedor.textContent != 0) {
+                        botonAnnadir.classList.remove('ocultar')
+                    }
+                }
+
+
+            }
+        }
+    )
+    ;
+</script>
+

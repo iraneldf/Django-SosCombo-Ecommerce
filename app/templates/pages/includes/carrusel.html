@@ -1,10 +1,190 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% load static %}
+<section class="texto-encabezado__contenedor fondo1">
+
+    <button class="btn-encabezado-flecha-fondo">
+        <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24"
+             width="24px" fill="#000000">
+            <g>
+                <path d="M0,0h24v24H0V0z" fill="none"/>
+            </g>
+            <g>
+                <polygon points="6.23,20.23 8,22 18,12 8,2 6.23,3.77 14.46,12"/>
+            </g>
+        </svg>
+    </button>
+
+    <div class="texto-encabezado encabezado1">
+        <p>Realiza la compra semanal desde casa y ahórrate el <span class="fuerza">5%</span> de tus gastos.</p>
+        <button class="btn-comprar" type="button">COMPRAR</button>
+    </div>
+    <div class="texto-encabezado encabezado2"><!--
+            <p>Los mejores precios de productos cárnicos en el mercado</p> -->
+        <p>Compra
+            <span class="fuerza-color">10 productos</span>
+            y recibe un
+            <span class="fuerza-color">descuento del 15%.</span>
+        </p>
+        <button class="btn-comprar" type="button">COMPRAR</button>
+    </div>
+    <div class="texto-encabezado encabezado3">
+        <div>
+            <p>Recibe nuestros productos sin salir de casa.</p>
+            <button class="btn-comprar" type="button">COMPRAR</button>
+        </div>
+    </div>
+    <div class="paginador">
+        <div class="circulo1"></div>
+        <div class="circulo2"></div>
+        <div class="circulo3"></div>
+    </div>
+</section>
+<script>
+    const fondoEncabezado = document.querySelector('.texto-encabezado__contenedor');
+    const btnTieneCuenta = document.getElementById('btn-tiene-cuenta');
+
+    let c = 0;
+    let a = 0;
+
+    // Cambio de imagen del carrusel
+    setInterval(() => {
+            c++;
+            if (c === 1) {
+                fondoEncabezado.classList.replace('fondo1', 'fondo2');
+            } else if (c === 2) {
+                fondoEncabezado.classList.replace('fondo2', 'fondo3');
+            } else if (c === 3) fondoEncabezado.classList.replace('fondo3', 'fondo1');
+            if (c === 3) c = 0;
+        }
+        , 3000);
+
+</script>
+
+<style>
+
+    .fondo1 {
+        background-image: url("{% static 'img/banner1 PC.png' %}");
+        background-size: 100% 100%;
+    }
+
+    .fondo2 {
+        background-image: url("{% static 'img/banner2 PC.png' %}");
+        background-size: 100% 100%;
+    }
+
+    .fondo3 {
+        background-image: url("{% static 'img/banner3 PC.jpg.png' %}");
+        background-size: 143% 100%;
+        background-position: 61% 67%;
+
+    }
+
+    .fondo3 .encabezado3 {
+        color: #000;
+    }
+
+    .encabezado1 p,
+    .encabezado1 span,
+    .encabezado3 p,
+    .encabezado3 span {
+        color: rgb(255, 255, 255);
+    }
+
+    .encabezado2 span {
+        color: orange;
+        font-weight: 900;
+    }
+
+    .encabezado2 {
+        margin-top: 30px;
+    }
+
+    .encabezado2 p {
+        color: #000;
+    }
+
+    .texto-encabezado span {
+        font-size: 40px;
+    }
+
+    .encabezado2 {
+        width: 595px;
+        text-align: end;
+        position: absolute;
+        left: 47.17%;
+        top: 4.45%;
+        bottom: 36.16%;
+    }
+
+    .encabezado3 {
+        width: 407px;
+        position: absolute;
+        left: 1.17%;
+        top: 51.45%;
+        bottom: 14.16%;
+    }
+
+    .encabezado3 p {
+        width: 471px;
+    }
+
+    .encabezado3 div {
+        display: flex;
+        align-items: end;
+        width: 500px;
+    }
+
+    .encabezado3 button {
+        position: relative;
+        left: -165px;
+        top: -10px;
+    }
+
+
+    /* Para los textos */
+    .fondo1 .encabezado2,
+    .encabezado3 {
+        display: none;
+    }
+
+    .fondo1 .encabezado1 {
+        display: block;
+    }
+
+    .fondo1 .encabezado1 p {
+        color: #f7efef;
+    }
+
+    .fondo1 .paginador .circulo1 {
+        background: var(--rojoFuerte);
+    }
+
+    .fondo2 .encabezado1,
+    .encabezado3 {
+        display: none;
+    }
+
+    .fondo2 .encabezado2 {
+        display: block;
+    }
+
+    .fondo2 .paginador .circulo2 {
+        background: var(--rojoFuerte);
+    }
+
+    .fondo3 .encabezado1,
+    .encabezado2 {
+        display: none;
+    }
+
+    .fondo3 .encabezado3 {
+        display: block;
+        color: #fff;
+    }
+
+    .fondo3 .paginador .circulo3 {
+        background: var(--rojoFuerte);
+    }
+
+
+
+</style>

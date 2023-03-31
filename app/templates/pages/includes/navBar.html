@@ -1,0 +1,170 @@
+{% load static %}
+<section {% if path == 'VerProductos' or path == 'productos' %} style="padding-bottom: 20px;"{% endif %}
+                                                                class="bienvenidos  {% if path == 'VerProductos' or path == 'productos' %}padding-alineador{% endif %}">
+    {% if not general.logo %}
+        <div class="logo-web">
+            <a href="{% url 'index' %}">
+                <svg id="Capa_1" data-name="Capa 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 679.68 259.2">
+                    <defs>
+                        <style>
+                            .cls-1 {
+                                font-size: 70px;
+                                fill: #1d1d1b;
+                                font-family: 'Lato', sans-serif;
+                                font-weight: 600;
+                            }
+
+                            .cls-2 {
+                                fill: #e94e1b;
+                            }
+                        </style>
+                    </defs>
+                    <text y="-5%" class="cls-1" transform="translate(209.74 170.13)">{{ general.nombre }}</text>
+                    <path class="cls-2"
+                          d="M150.9,153.5a8.71,8.71,0,1,0,8.71,8.71A8.7,8.7,0,0,0,150.9,153.5Zm-44.34,0a8.71,8.71,0,1,0,8.71,8.71A8.69,8.69,0,0,0,106.56,153.5Z"/>
+                    <path class="cls-2"
+                          d="M84.48,85.24a19.54,19.54,0,0,0-7.43,9.25L68.44,65.05H55.52c-4.53-.26-7.38-5.15-6.46-9H76Z"/>
+                    <path class="cls-2"
+                          d="M173.46,97.26H99.13a7.8,7.8,0,0,0-.23,15.6v0h54.27a16.92,16.92,0,0,1,.22,33.83H99.13c-5.66,0-9.28-6-8.15-10.82l8.15.08h53.46c3.93,0,7.13-2.27,7.13-6.2s-3.2-6.16-7.13-6.16H98.9a18.52,18.52,0,0,1,0-37h82.66C182.69,91.26,179.08,97.23,173.46,97.26Z"/>
+                    <path class="cls-2" d="M153.39,113.63h0Z"/>
+                    <path class="cls-2" d="M99.24,87.44h0Z"/>
+                    <path class="cls-2" d="M153.39,146.65h0Z"/>
+                    <path class="cls-2" d="M153.17,112.81h0Z"/>
+                </svg>
+            </a>
+        </div>
+    {% else %}
+        <div class="logo-web">
+            <a href="{% url 'index' %}">
+                <div id="logo">
+                    <img class="imagen-logo" src="{{ general.logo.url }}">
+                    <text y="-5%" class="texto-logo" transform="translate(209.74 170.13)">{{ general.nombre }}</text>
+                </div>
+            </a>
+        </div>
+    {% endif %}
+    <header class="encabezado" style="height: 30px;">
+        <div class="navBar">
+            <div class="navBar__menu-ubicacion">
+                <div class="menu__caja">
+                    <button class="btn-menu" type="button">
+                        <img class="menu-hamburguesa" width="20px" alt="menu" src="{% static 'img/Iconos/Menu.png' %}"/>
+                        <label class="menu-text-escritorio">MENÚ</label>
+                    </button>
+                    <nav class="" id="menu-principal">
+                        <div class="cerrar-menu">
+                            <button class="btn-cerrar-menu" type="button">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24"
+                                     width="24px" fill="#fff">
+                                    <path d="M0 0h24v24H0z" fill="none"/>
+                                    <path
+                                            d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <ul style="margin-top: 50px">
+                            <li><a href="{% url 'index' %}">INICIO</a></li>
+                            <li><a href="{% url 'productos' %}">PRODUCTOS</a></li>
+                            <li><a href="{% url 'sobreNosotros' %}">SOBRE NOSOTROS</a></li>
+                            <li><a href="{% url 'contacto' %}">CONTACTO</a></li>
+                        </ul>
+
+
+                        <div class="apartado-menu">
+                            <div class="apartado-menu-border-top">
+                                <img class="apartado-menu__logo" src="{% static 'img/Iconos/ll.svg' %}">
+                                <ul class="contactar-apartado-menu">
+                                    <li class="email-navbar">
+                                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24"
+                                             width="24px" fill="#fff">
+                                            <path d="M0 0h24v24H0V0z" fill="none"/>
+                                            <path
+                                                    d="M22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6zm-2 0l-8 5-8-5h16zm0 12H4V8l8 5 8-5v10z"/>
+                                        </svg>
+                                        <p>{{ contactenos.email }}</p>
+                                    </li>
+
+                                    <li>
+                                        <form action="#">
+                                            <input class="input-suscribir__email" type="email"
+                                                   placeholder="Dirección de correo" required>
+                                            <input class="input-suscribir__submit" type="submit" value="SUSCRÍBETE">
+                                        </form>
+                                    </li>
+                                </ul>
+                            </div>
+
+                        </div>
+
+
+                    </nav>
+                </div>
+                {#//////////////////////////////////////#}
+                <svg {% if path != 'productos' %} style="display: none" {% endif %} class="ubicacion-icono"
+                                                  xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24"
+                                                  width="24px" fill="#e77f5c">
+                    <path d="M0 0h24v24H0V0z" fill="none"/>
+                    <path
+                            d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zM7 9c0-2.76 2.24-5 5-5s5 2.24 5 5c0 2.88-2.88 7.19-5 9.88C9.92 16.21 7 11.85 7 9z"/>
+                    <circle cx="12" cy="9" r="2.5"/>
+                </svg>
+                <!-- Ubicacion -->
+                <label {% if path != 'productos' %} style="display: none" {% endif %}
+                                                    onclick="document.getElementById('modal-ubicacion').style.display='block'">
+                    {% if request.session.ubicacion %} {{ request.session.ubicacion }} {% else %}
+                        Localización... {% endif %}
+                </label>
+            </div>
+            <div class="navBar__contactar-compra">
+
+
+                <form {% if path != 'productos' %} style="display: none;" {% endif %}  action="#" id="barra-buscar"
+                                                   class="barra-escritorio">
+                    <button class="btn-buscar-escritorio" type="button">
+                        <svg class="buscar-icono" xmlns="http://www.w3.org/2000/svg" height="24px"
+                             viewBox="0 0 24 24" width="24px" fill="#000000">
+                            <path d="M0 0h24v24H0V0z" fill="none"/>
+                            <path
+                                    d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                        </svg>
+                    </button>
+                    <input class="barra-buscar" type="text" {% if path != 'productos' %}
+                           style="display: none;" {% endif %} >
+                </form>
+                {#//////////////////////////////////////#}
+
+                <a href="{% url 'productos' %}"    {% if path != 'productos' %}
+                   style="margin-left:10px"  {% endif %} >
+                    {% if path == 'productos' %}
+                        <img class="" style="width: 24px" src="{% static 'img/Iconos/icons8-food-donor-50 full.png' %}" alt=""/>
+                    {% else %}
+                        <img class="" style="width: 24px" src="{% static 'img/Iconos/icons8-food-donor-50.png' %}" alt=""/>
+                    {% endif %}
+                </a>
+                <a href="{% url 'carrito' %}"    {% if path != 'productos' %}
+                   style="margin-left:10px"  {% endif %} >
+                    {% if path == 'carrito' %}
+                        <img class="carrito-full" src="{% static 'img/Iconos/carritoStroke.png' %}" alt=""/>
+                    {% else %}
+                        <img class="carrito-stroke" src="{% static 'img/Iconos/carritoStroke.png' %}" alt=""/>
+                    {% endif %}
+                    <p class="contar-productos-compra ocultar">0</p>
+                </a>
+            </div>
+        </div>
+
+        <form {% if path != 'productos' %} style="display: none;" {% endif %}   action="#" id="barra-buscar" class="barra-responsive">
+
+            <button class="btn-buscar" type="button">
+                <svg class="buscar-icono" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24"
+                     width="24px" fill="#000000">
+                    <path d="M0 0h24v24H0V0z" fill="none"/>
+                    <path
+                            d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                </svg>
+            </button>
+            <input class="barra-buscar" type="text">
+        </form>
+
+    </header>
+</section>

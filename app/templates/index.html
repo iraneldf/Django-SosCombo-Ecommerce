@@ -1,0 +1,60 @@
+{% extends 'pages/includes/base.html' %}
+{% load static %}
+{% load app_extras %}
+
+{% block content %}
+
+    {###########################Carrusel ##############################}
+    {% include 'pages/includes/OwlCarrusel.html' %}
+    {######################MEJORES  PRODUCTOS##############################################}
+    <section class="mejores-productos__contenedor p-10 p-60-vertical">
+        <h2 class="mejoresProductosTexto">LOS <span style="font-weight: 900">MEJORES  PRODUCTOS</span> A SU DISPOSICIÓN
+        </h2>
+
+        <div class="visitar-productos">
+            <a href="{% url 'productos' %}">Ver todos</a>
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000">
+                <path d="M0 0h24v24H0V0z" fill="none"/>
+                <path d="M10 17l5-5-5-5v10z"/>
+            </svg>
+        </div>
+        {% include 'pages/includes/productos/MejoresProductosContenedor.html' %}
+
+        <div class="btn-ver-mas__contenedor">
+
+            <a type="button" class="btn-ver-mas__inicie-compra btn-verMas" href="{% url 'productos' %}">VER MÁS</a>
+        </div>
+
+    </section>
+
+    {######################PEDIDOS A DOMICILIO##############################################}
+    <section class="pedidos-domicilio" style="background-image: url('{{ domicilio.imagen.url }}');">
+        <div class="pedidos-domicilio__texto">
+            <h2>{{ domicilio.encabezado }}</h2>
+            <p>{{ domicilio.texto }}</p>
+        </div>
+    </section>
+
+    {######################OFERTAS ESPECIALES##############################################}
+
+
+    <section class="ofertas-especiales__contenedor">
+        <h2>OFERTAS ESPECIALES</h2>
+        <h3 class="ofertas-especiales-vista-pc">COMBOS DE COMIDA</h3>
+        <div class="ofertas-especiales__productos-contenedor">
+            {% include 'pages/includes/productos/ofertaEspecialesContenedor.html' %}
+        </div>
+    </section>
+
+{% endblock %}
+
+{% block ExtrasJS %}
+    <script>
+        function hola(e) {
+            console.log(e)
+        }
+    </script>
+{% endblock %}
+
+
+

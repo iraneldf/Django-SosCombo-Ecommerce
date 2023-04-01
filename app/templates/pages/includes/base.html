@@ -1,0 +1,290 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% if not general.logo %}
+        <link rel="icon" type="icon" href="{% static 'img/Iconos/favicon-05.svg' %}">
+    {% else %}
+        <link rel="icon" type="icon" href="{{ general.logo.url }}">
+    {% endif %}
+    <title>{{ general.nombre.upper }}</title>
+
+    <!-- CSS -->
+
+    {% block css %}
+
+    {% endblock %}
+    <link href="{% static 'plugins/font-awesome-4.7.0/css/font-awesome.min.css' %}" rel="stylesheet"
+          type="text/css">
+
+    <link href="{% static 'css/anim.css' %}" rel="stylesheet" type="text/css">
+
+    <link href="{% static 'css/estilosGenerales.css' %}" rel="stylesheet" type="text/css">
+
+    <link href="{% static 'css/index.css' %}" rel="stylesheet" type="text/css">
+
+    <link href="{% static 'css/cssMenu.css' %}" rel="stylesheet" type="text/css">
+
+    <link href="{% static 'css/piePagina.css' %}" rel="stylesheet" type="text/css">
+
+    <link href="{% static 'css/modal.css' %}" rel="stylesheet" type="text/css">
+
+    {#    extras    #}
+
+    {#######################}
+
+
+</head>
+
+<body>
+<script type="text/javascript" src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+<script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+<script src="{% static 'js/infinite.min.js' %}"></script>
+{% include 'pages/includes/navBar.html' %}
+{% block content %}
+
+{% endblock %}
+
+{################################fOOTER######################################}
+<footer class="pie-pagina__contenedor">
+    {% if not general.logo %}
+        <div class="pie-pagina__logo-web">
+            <a href="{% url 'index' %}">
+                <svg id="Capa_1" data-name="Capa 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 679.68 259.2">
+                    <defs>
+                        <style>
+                            .cls-1 {
+                                font-size: 72px;
+                                fill: #1d1d1b;
+                                font-family: 'Lato', sans-serif;
+                                font-weight: 600;
+                            }
+
+                            .cls-2 {
+                                fill: #e94e1b;
+                            }
+                        </style>
+                    </defs>
+                    <text y="-5%" class="cls-1" transform="translate(209.74 170.13)">{{ general.nombre }}</text>
+                    <path class="cls-2"
+                          d="M150.9,153.5a8.71,8.71,0,1,0,8.71,8.71A8.7,8.7,0,0,0,150.9,153.5Zm-44.34,0a8.71,8.71,0,1,0,8.71,8.71A8.69,8.69,0,0,0,106.56,153.5Z"/>
+                    <path class="cls-2"
+                          d="M84.48,85.24a19.54,19.54,0,0,0-7.43,9.25L68.44,65.05H55.52c-4.53-.26-7.38-5.15-6.46-9H76Z"/>
+                    <path class="cls-2"
+                          d="M173.46,97.26H99.13a7.8,7.8,0,0,0-.23,15.6v0h54.27a16.92,16.92,0,0,1,.22,33.83H99.13c-5.66,0-9.28-6-8.15-10.82l8.15.08h53.46c3.93,0,7.13-2.27,7.13-6.2s-3.2-6.16-7.13-6.16H98.9a18.52,18.52,0,0,1,0-37h82.66C182.69,91.26,179.08,97.23,173.46,97.26Z"/>
+                    <path class="cls-2" d="M153.39,113.63h0Z"/>
+                    <path class="cls-2" d="M99.24,87.44h0Z"/>
+                    <path class="cls-2" d="M153.39,146.65h0Z"/>
+                    <path class="cls-2" d="M153.17,112.81h0Z"/>
+                </svg>
+            </a>
+        </div>
+    {% else %}
+        <div class="pie-pagina__logo-web-dinamico">
+            <a href="{% url 'index' %}">
+                <div id="logo-pie">
+                    <img class="imagen-logo-pie" src="{{ general.logo.url }}">
+                    <text class="texto-logo-pie">{{ general.nombre }}</text>
+                </div>
+            </a>
+
+        </div>
+    {% endif %}
+    <div class="pie-pagina__conocenos">
+        <h2>CONÓCENOS</h2>
+        <ul>
+            <li>
+                <a style="color: black;" href="{% url 'sobreNosotros' %}">{{ conocenos.sobreNosotros }}</a>
+            </li>
+            <li>
+                <a style="color: black;" href="{% url 'condicionesUso' %}">{{ conocenos.condiciones }}</a>
+            </li>
+            <li>
+                <a style="color: black;" href="{% url 'enviosDevoluciones' %}">{{ conocenos.envio }}</a>
+            </li>
+            <li>
+                <a style="color: black;" href="{% url 'politicaPrivacidad' %}">{{ conocenos.politica }}</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="contacteno-suscribete-vista-pc">
+        <div class="pie-pagina__contactenos">
+            <h2>CONTÁCTENOS</h2>
+            <ul>
+                <li id="telefono-contenedor">
+                    <button class="call-hover-botton" id="telefonoBoton"
+                            onclick="copyClipboard('#texto_a_copiar');">Copiar
+                    </button>
+                    <img class="pie-pagina__icono" src="{% static 'img/Iconos/telefono.svg' %}">
+                    <p id="texto_a_copiar">{{ contactenos.telef }}</p>
+                </li>
+                <li id="mail-contenedor">
+                    <button class="call-hover-botton"><a href="{{ contactenos.email_en }}">Visitar</a></button>
+                    <img class="pie-pagina__icono" src="{% static 'img/Iconos/email_black_24dp.svg' %}">
+                    <p>{{ contactenos.email }}</p>
+                </li>
+            </ul>
+        </div>
+        <div class="pie-pagina__suscribete">
+            <h2>SUSCRÍBETE</h2>
+
+            <form action="{% url 'subscribe' %}" method="post">
+                {% csrf_token %}
+                <input class="input-suscribir__email" name="email" type="email" placeholder="Email Address" required>
+                <input class="input-suscribir__submit" type="submit" value="SUSCRÍBETE">
+            </form>
+
+        </div>
+    </div>
+
+    <p class="pie-pagina__final">© 2022 {{ general.nombre }}. Developed by GoDjango</p>
+</footer>
+
+{##############PLANTILLA OCULTA#############################}
+{#<!--Los Productos están en JS-->#}
+{#<div class="plantilla plantilla-oculta">#}
+{#    <div class="plantilla-producto">#}
+{#        <div class="producto">#}
+{#            <a class="mostrar-producto" href="./pages/verProducto.html">#}
+{#                <img class="foto-producto" alt="foto producto" src="">#}
+{#            </a>#}
+{#            <div class="nombre-precio-producto ">#}
+{#                <h4></h4>#}
+{#                <p></p>#}
+{#            </div>#}
+{#            <div class="contar-producto">#}
+{#                <button class="btn-contar restar" type="button">&minus;</button>#}
+{#                <div id="contador">0</div>#}
+{#                <button class="btn-contar sumar" type="button">&plus;</button>#}
+{#            </div>#}
+{##}
+{#            <button#}
+{#                    type="button"#}
+{#                    class="annadir-carrito btnSimple-carrito__comprar-mas"#}
+{#            >#}
+{#                AÑADIR#}
+{#            </button>#}
+{#            <button#}
+{#                    onclick="document.querySelector('.annadir-carrito carrito__comprar-mas').classList.add('animate')"#}
+{#                    class="annadir-carrito carrito__comprar-mas" type="button"></button>#}
+{#        </div>#}
+{#    </div>#}
+{#</div>#}
+{% block footer %}
+
+{% endblock %}
+{#####################MODAL UBICACION########################}
+<div id="modal-ubicacion" class="modal">
+    <div class="form-modal-ubicacion" action="#">
+        <div class="modal-ubicacion-contenedor">
+            <p>Seleccione la dirección del envío</p>
+
+            <img src="{% static 'img/Iconos/ubicacion.svg' %}">
+
+            <div class="input-form-ubicacion">
+                <p>Localización</p>
+                <div class="campo-modal-ubicacion">
+                    <input type="text" name="ubicacion" value="{{ request.session.ubicacion }}" disabled
+                           class="provincia-ubicacion"
+                           placeholder="Seleccionar localización...">
+                    <button type="button" class="btn-provincia">
+                        <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="15px"
+                             viewBox="0 0 24 24" width="15px" fill="#000000">
+                            <g>
+                                <path d="M0,0h24v24H0V0z" fill="none"/>
+                            </g>
+                            <g>
+                                <polygon points="6.23,20.23 8,22 18,12 8,2 6.23,3.77 14.46,12"/>
+                            </g>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <button type="button" onclick="document.getElementById('modal-ubicacion').style.display='none'"
+                    class="btn-continuar">CONTINUAR
+            </button>
+            <form action="" method="get" class="cancelar">
+                <input type="hidden" value="ubicaciones" name="cancelar">
+                {% if request.session.ubicacion %}
+                    <button type="submit"
+                            class="btn-quitar">QUITAR
+                    </button>
+                {% endif %}
+            </form>
+        </div>
+
+    </div>
+</div>
+
+{###################LOCALIZACIONES#################################}
+<div class="ubicacion-provincia-modal ocultar-sub-modal">
+    <div class="ubicacion-provincia">
+        <h3>Seleccione la localizacíon...</h3>
+
+        <form action="" method="get" class="modal-provincia-buscar">
+
+            <button type="submit" class="btn-buscar-modal">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px"
+                     fill="#000000">
+                    <path d="M0 0h24v24H0V0z" fill="none"/>
+                    <path
+                            d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                </svg>
+            </button>
+            <input type="text" class="buscar contact-filter">
+
+        </form>
+
+        <form action="" method="get" class="ubicaciones">
+            {% for u in ubicaciones %}
+                <div class="provincia-ubicacion">
+                    <label class="nombre">{{ u.ubicacion }}</label>
+                    <input type="radio" name="ubicacion" value="{{ u.ubicacion }}">
+                </div>
+            {% endfor %}
+
+            <button type="submit"
+                    onclick="document.querySelector('.ubicacion-provincia-modal').classList.toggle('ocultar-sub-modal')"
+                    class="btn-aceptar-ubi">ACEPTAR
+            </button>
+        </form>
+        <form action="" method="get" class="cancelar">
+            <input type="hidden" value="ubicaciones" name="cancelar">
+            <button type="submit"
+                    onclick="document.querySelector('.ubicacion-provincia-modal').classList.toggle('ocultar-sub-modal')"
+                    class="btn-continuar">CANCELAR
+            </button>
+        </form>
+
+
+    </div>
+
+</div>
+{###################LINKS JS#################################}
+<script type="text/javascript" src="{% static 'js/modal.js' %}"></script>
+{#<script type="text/javascript" src="{% static 'js/datosProductos.js' %}"></script>#}
+<script type="text/javascript" src="{% static 'js/annadirCarrito.js' %}"></script>
+{% block ExtrasJS %} {% endblock %}
+<script type="text/javascript" src="{% static 'js/menu.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/filter-table.js' %}"></script>
+
+<script>
+    {#  COPIAR EN EL CORTAPAPELES  #}
+    window.addEventListener("load", C())
+
+    function copyClipboard(element) {
+        var $bridge = $("<input>")
+        $("body").append($bridge);
+        $bridge.val($(element).text()).select();
+        document.execCommand("copy");
+        $bridge.remove();
+    }
+
+
+</script>
+

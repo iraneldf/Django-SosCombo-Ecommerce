@@ -1,0 +1,76 @@
+{######################MEJORES  PRODUCTOS##############################################}
+{% for p in listado_productos_especiales %}
+    <div class="plantilla-producto">
+        <div class="producto">
+            <a class="mostrar-producto" href="{% url 'VerProductos' p.id %}">
+                <img class="foto-producto" alt="foto producto" src="{{ p.imagen.url }}"
+                     style="width: 160px; height: 120px">
+            </a>
+            <div class="nombre-precio-producto ">
+                <h4>{{ p.nombre }}</h4>
+                <p>{{ p.precio }}</p>
+            </div>
+
+            <div class="contar-producto">
+                <button class="btn-contar restar" id="id{{ p.id }}" type="button">&minus;</button>
+                <div id="contador" class="id{{ p.id }}">1</div>
+                <button class="btn-contar sumar" id="id{{ p.id }}" type="button">&plus;</button>
+            </div>
+
+            <button
+                    type="button"
+                    class="annadir-carrito btnSimple-carrito__comprar-mas"
+                    id="btnid{{ p.id }}"
+                    onclick="addCarrito({{ p.id }},
+                            document.querySelector('.id{{ p.id }}').textContent)"
+            >
+                AÑADIR
+            </button>
+            <button
+                    onclick="addCarrito({{ p.id }},
+                            document.querySelector('.id{{ p.id }}').textContent);
+                            document.querySelector('.annadir-carrito carrito__comprar-mas').classList.add('animate')"
+                    class="annadir-carrito carrito__comprar-mas" type="button"></button>
+        </div>
+
+    </div>
+{% endfor %}
+
+
+{#OCULTAR Y MOSTRAR EL BOTON ANNADIR#}
+<script>
+    function addCarrito(id, quantity) {
+        $.ajax(
+            {
+                url: '{% url 'cartAjax'  %}',
+                type: 'POST',
+                data: {id: id, quantity: quantity},
+                dataType: 'json'
+            }
+        )
+    }
+
+    {#OCULTAR Y MOSTRAR EL BOTON ANNADIR#}
+    window.addEventListener('click', (e) => {
+            if (e.composedPath()[0].classList[0] == 'btn-contar') {
+                const botonAnnadir = document.querySelector(`#btn${e.composedPath()[0].id}`);
+                const contenedor = document.querySelector(`.${e.composedPath()[0].id}`);
+
+                botonAnnadir.classList.remove('ocultar');
+
+                if (e.composedPath()[0].classList[1] == 'restar') {
+                    if (contenedor.textContent == 1 || contenedor.textContent == 0) {
+                        botonAnnadir.classList.add('ocultar')
+                    }
+                } else if (e.composedPath()[0].classList[1] == 'sumar') {
+                    if (contenedor.textContent != 0) {
+                        botonAnnadir.classList.remove('ocultar')
+                    }
+                }
+
+
+            }
+        }
+    )
+    ;
+</script>

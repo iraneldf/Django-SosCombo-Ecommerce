@@ -1,0 +1,39 @@
+{% extends 'pages/includes/base.html' %}
+{% load static %}
+{% block css %}
+    <link href="{% static 'css/paginasSecundarias.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/modalTusOrdenes.css' %}" rel="stylesheet" type="text/css">
+{% endblock %}
+{% block content %}
+
+    <section class="contacto__contenedor pagina-secundaria__contenedor">
+        <h2>CONTACTO</h2>
+        <div>
+            <div class="cuadro__pagina-secundaria">
+                <p><span class="resartar">Teléfono:</span> Puedes llamarnos por telefono de lunes a viernes, de 9h a
+                    18h, al
+                    número {{ contactenos.telef }}.</p>
+            </div>
+            <div class="cuadro__pagina-secundaria">
+                <p><span class="resartar">E-mail:</span> No dudes en ponerte en contacto con nosotros a trvés del
+                    formulariode contacto.<br></p>
+                <a href="{{ contactenos.email_en }}"><span class="subrayar">{{ contactenos.email }}</span></a>
+            </div>
+            <div class="cuadro__pagina-secundaria">
+                <p>Chat instantáneo: Contacta en directo con nosotros por chat de 9h a 18h a traves del "¿Puedo
+                    ayudarte?"
+                    situado en la parte inferior de la web.</p>
+            </div>
+        </div>
+        <div class="contactar-chat">
+            <a href="#"><span class="subrayar">Escríbenos por chat</span></a>
+        </div>
+    </section>
+
+{% endblock %}
+
+
+
+
+
+

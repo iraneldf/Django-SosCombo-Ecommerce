@@ -1,0 +1,113 @@
+{% extends 'pages/includes/base.html' %}
+{% load static %}
+{% block css %}
+    <link href="{% static 'css/paginasSecundarias.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/modalTusOrdenes.css' %}" rel="stylesheet" type="text/css">
+{% endblock %}
+{% block content %}
+    <!-- ****************************************** -->
+    {% if request.session.cart.items %}
+        <section class="carrito-lleno-contenedor pagina-secundaria__contenedor justify-center align-center">
+        <h2 class="tusOrdenes">TUS ÓRDENES</h2>
+
+        <article class="contenedor-productos-carrito">
+            {% for key,value in request.session.cart.items %}
+                <div class="plantilla-carrito__contenedor-principal">
+                    <div class="plantilla-contenido">
+                        <img class="foto-producto__plantilla" alt="foto producto"
+                             src="{{ value.product.imagen }}">
+                        <div class="propiedades-producto__plantilla">
+                            <p class="nombre-producto__plantilla">{{ value.product.nombre }}</p>
+                            <p class="precio-producto__plantilla">$ {{ value.product.precio }}</p>
+
+                            <div class="contar-producto__plantilla">
+                                <div id="" class="id{{ value.product.id }}">cantidad : {{ value.quantity }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+
+        </article>
+
+
+        <article class="resumen-pedido-carrito">
+            <h2>RESUMEN DEL PEDIDO</h2>
+            <div class="resumen-pedido">
+                <p>Subtotal</p>
+                <p id="subtotal"></p>
+            </div>
+            <div class="resumen-pedido">
+                <p>Precio del envío</p>
+                <p>$ {{ general.precio }}</p>
+            </div>
+            <div class="resumen-pedido total__pago">
+                <p class="resartar">Total</p>
+                <p class="resartar" id="total"></p>
+            </div>
+
+
+            <div class="btn-resumen-pedido">
+                <a class="btn-resumen-pedido__carrito seguir-comprando__carrito" href="./productos.html">SEGUIR
+                    COMPRANDO</a>
+                <a class="btn-resumen-pedido__carrito pagar__carrito" href="{% url 'pago' %}">PAGAR</a>
+            </div>
+        </article>
+    {% endif %}
+
+<!-- boton de paypal -->
+<div id="paypal-button-container" class="d-none"></div>
+
+
+</section>
+    <script src="https://www.paypal.com/sdk/js?client-id={{ general.id_paypal|safe }}&locale=es_ES&currency=USD"></script>
+{% endblock %}
+
+{% block ExtrasJS %}
+
+    <script>
+
+        window.addEventListener('load', multiply)
+        window.addEventListener('load', total_sum)
+
+        var result = 0
+        var asd = 0
+
+        function multiply() {
+            {% for key,value in request.session.cart.items %}
+                result = parseFloat({{ value.quantity }}) * parseFloat({{ value.product.precio }});
+                document.getElementById("resultado{{ value.product.id }}").innerHTML = result.toFixed(2);
+            {% endfor %}
+        }
+
+        function total_sum() {
+            let sum = 0
+            {% for key,value in request.session.cart.items %}
+                asd = parseFloat({{ value.quantity }}) * parseFloat({{ value.product.precio }})
+                sum = sum + asd;
+            {% endfor %}
+            document.getElementById("subtotal").innerHTML = "$" + sum.toFixed(2);
+            document.getElementById("total").innerHTML = "$" + (sum + parseFloat({{  general.precio|safe }})).toFixed(2);
+            return parseFloat(sum + parseFloat({{ general.precio|safe }}))
+        }
+
+        {#paypal.Buttons({#}
+        {#    createOrder: function (data, actions) {#}
+        {#        return actions.order.create({#}
+        {#            purchase_units: [{#}
+        {#                amount: {#}
+        {#                    value: total_sum(),#}
+        {#                },#}
+        {#            }]#}
+        {##}
+        {#        });#}
+        {#    },#}
+        {#    onApprove: function (data, actions) {#}
+        {#        // This function captures the funds from the transaction.#}
+        {#        return actions.order.capture().then(function (details) {#}
+        {##}
+        {#        });#}
+        {#    }#}
+        {#}).render('#paypal-button-container');#}
+    </script>
+{% endblock %}

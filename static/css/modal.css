@@ -1,0 +1,280 @@
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    padding-top: 100px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(238 233 232 / 77%);
+    /*background-color: rgba(0, 0, 0, 0.3);*/
+}
+
+.modal-carrito-contenedor,
+.modal-ubicacion-contenedor {
+    padding: 16px;
+    text-align: center;
+}
+
+.form-modal-carrito,
+.form-modal-ubicacion {
+    background-color: #fefefe;
+    margin: 5% auto 15% auto;
+    border: 1px solid #888;
+    width: 30%;
+    border-radius: 5px;
+}
+
+.form-modal-ubicacion {
+    width: 28%;
+}
+
+.form-modal-carrito {
+    width: 30%;
+}
+
+.btn-modal-carrito-contenedor {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.btn-modal-carrito-contenedor button {
+    width: 40%;
+    padding: 6px;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.btn-quitar {
+    background: #c73a3c;
+    color: #fff;
+    box-shadow: 8px 8px 30px 1px #bebbba;
+    width: 100%;
+    padding: 7px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 15px;
+    border-radius: 6px;
+    margin-top: 33px;
+    margin-bottom: 15px;
+    cursor: pointer;
+    font-weight: 600;
+
+}
+
+.btn-quitar:hover {
+      background: #c00d12;
+}
+
+.btn-aceptar {
+    background: #e77f5c;
+    color: #fff;
+    box-shadow: 8px 8px 30px 1px #bebbba;
+}
+
+
+.modal-ubicacion-contenedor img {
+    width: 100%;
+    height: 100px;
+    margin: 60px 0 15px 0;
+}
+
+.modal-ubicacion-contenedor p {
+    font-weight: 700;
+    /*font-size: 15px;*/
+}
+
+.input-form-ubicacion p {
+    margin: 15px 0 0 0;
+}
+
+
+.input-form-ubicacion {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.input-form-ubicacion p {
+    display: flex;
+    justify-content: flex-start;
+    margin-left: 0;
+}
+
+
+.provincia-ubicacion,
+.municipio-ubicacion {
+    border-radius: 5px;
+    width: 100%;
+    /*height: 30px;*/
+}
+
+.input-form-ubicacion .provincia-ubicacion,
+.input-form-ubicacion .municipio-ubicacion {
+
+    border: 1px solid #000;
+    margin-top: 0;
+    padding-left: 7px;
+}
+
+
+.btn-provincia,
+.btn-municipio {
+    transform: rotate(90deg);
+    width: 10%;
+    height: 29px;
+    background: transparent;
+    right: 5px;
+    top: 2px;
+    bottom: 0;
+    position: absolute;
+}
+
+
+.btn-continuar {
+    background: var(--naranja__1);
+    color: #fff;
+    box-shadow: 8px 8px 30px 1px #bebbba;
+    width: 100%;
+    padding: 7px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 15px;
+    border-radius: 6px;
+    margin-top: 33px;
+    margin-bottom: 15px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.btn-aceptar-ubi {
+    border: 1.8px solid var(--naranja__1);
+    color: var(--naranja__1);
+    box-shadow: 8px 8px 30px 1px #bebbba;
+    width: 100%;
+    padding: 7px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 15px;
+    border-radius: 6px;
+    margin-top: 33px;
+    margin-bottom: 15px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+
+.ubicacion-provincia-modal,
+.ubicacion-municipio-modal {
+    position: fixed;
+    z-index: 1;
+    padding-top: 40px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.ubicacion-provincia,
+.ubicacion-municipio {
+    background-color: #fefefe;
+    margin: 5% auto 15% auto;
+    border: 1px solid #888;
+    width: 26%;
+    border-radius: 5px;
+    padding: 14px 20px;
+    /*min-width: 220px;*/
+}
+
+.provincia-ubicacion,
+.municipio-ubicacion {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+    height: 30px;
+    /*margin-bottom: 25px;*/
+    /*padding-left: 7px;*/
+}
+
+.ocultar-sub-modal {
+    display: none;
+}
+
+.campo-modal-ubicacion {
+    display: flex;
+    width: 100%;
+    position: relative;
+}
+
+
+.modal-provincia-buscar {
+    display: flex;
+    width: 100%;
+    margin-top: 2%;
+}
+
+.modal-provincia-buscar .buscar {
+    width: 100%;
+    background: var(--grisClaro);
+    border-radius: 0 3px 3px 0;
+    padding: 4px 10px;
+}
+
+.modal-provincia-buscar .btn-buscar-modal {
+    background: var(--grisClaro);
+    border-radius: 3px 0 0 3px;
+    padding: 3px 5px;
+}
+
+
+@media screen and (max-width: 700px) {
+
+
+    .btn-cancelar,
+    .btn-aceptar {
+        width: 100%;
+    }
+
+    .form-modal-carrito,
+    .form-modal-ubicacion {
+        width: 70%;
+    }
+
+    .form-modal-carrito {
+        width: 85%;
+    }
+
+    .modal-eliminar-carrito {
+        background: red;
+    }
+
+    .carrito-lleno-contenedor h2 {
+        display: block;
+        margin-bottom: 20px;
+    }
+
+    .form-modal-carrito {
+        width: 85%;
+    }
+
+
+    .ubicacion-provincia,
+    .ubicacion-municipio {
+        width: 60%;
+    }
+}
+
+
+
+ 

@@ -1,0 +1,221 @@
+/* Pie de pagina */
+.pie-pagina__contenedor {
+    background: var(--grisClaro);
+    padding: 40px 10% 0 10%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.pie-pagina__contenedor h2 {
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+
+.pie-pagina__logo-web {
+    width: 20vw;
+    position: relative;
+    top: -40px;
+}
+
+/*DINAMICO COMPLETA*********************************/
+
+.pie-pagina__logo-web-dinamico {
+    position: relative;
+    top: -10px;
+
+}
+
+/*FIN DINAMICO*/
+.pie-pagina__logo-web img {
+    width: 125%;
+    margin-bottom: 20px;
+}
+
+
+
+.pie-pagina__conocenos {
+    margin-left: 5%;
+}
+
+.pie-pagina__conocenos ul li {
+    margin: 0 0 15px 5px;
+}
+
+.pie-pagina__conocenos ul li a:hover {
+    color: var(--naranja__1);
+}
+
+.pie-pagina__contactenos {
+    margin-left: 5%;
+    margin-bottom: 30px;
+}
+
+.pie-pagina__contactenos ul li {
+    display: flex;
+    align-items: end;
+    position: relative;
+}
+
+.pie-pagina__contactenos img {
+    width: 20px;
+}
+
+
+.pie-pagina__contactenos ul li p:hover {
+    text-decoration: underline;
+}
+
+.pie-pagina__contactenos ul li p:hover .call-hover-botton {
+    display: block;
+}
+
+.pie-pagina__contactenos ul li p {
+    margin-left: 3px;
+}
+
+.pie-pagina__suscribete {
+    margin-left: 5%;
+}
+
+.pie-pagina__suscribete form {
+    display: flex;
+}
+
+.input-suscribir__email {
+    width: 65%;
+    height: 6px;
+    padding: 15px;
+    font-size: 15px;
+    border: 1px solid #000;
+    border-right: none;
+    border-radius: 8px 0 0 8px;
+    background: transparent;
+}
+
+.input-suscribir__submit {
+    width: 50%;
+    padding: 10px;
+    color: #fff;
+    background: var(--naranja__1);
+    /*font-size: 15px;*/
+    /*font-weight: 700;*/
+    border-radius: 0 8px 8px 0;
+    cursor: pointer;
+}
+
+.pie-pagina__final {
+    width: 96%;
+    font-size: 14px;
+    display: flex;
+    margin-top: 50px;
+    justify-content: center;
+}
+
+.call-hover-botton {
+    position: absolute;
+    bottom: 100%;
+    left: 30%;
+    display: none;
+    background-color: var(--naranja__1);
+    color: white;
+    padding: 5px 15px;
+    border-radius: 5px;
+}
+
+#mail-contenedor:hover > button,
+#telefono-contenedor:hover > button {
+    display: block;
+}
+
+.call-hover-botton:hover {
+    background-color: var(--naranja__2);
+}
+
+@media screen and (max-width: 1000px) {
+    .pie-pagina__logo-web {
+        top: -23px;
+    }
+
+    /*DINAMICO*/
+    .pie-pagina__logo-web-dinamico {
+        top: -23px;
+    }
+
+    .pie-pagina__conocenos,
+    .pie-pagina__suscribete,
+    .pie-pagina__contactenos {
+        margin-left: 15px;
+    }
+
+}
+
+@media screen and (max-width: 900px) {
+
+    .pie-pagina__contenedor {
+        padding: 40px 0 0 0;
+        display: block;
+        padding-bottom: 15px;
+        padding-top: 0;
+    }
+
+    .pie-pagina__logo-web {
+        width: 200px;
+        position: relative;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, 0%);
+    }
+
+    .pie-pagina__logo-web-dinamico {
+        width: 200px;
+        position: relative;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, 0%);
+    }
+
+    .pie-pagina__logo-web img {
+        width: 100%;
+    }
+
+    .pie-pagina__contenedor h2 {
+        font-size: 28px;
+        margin-bottom: 15px;
+    }
+
+    .input-suscribir__email {
+        width: 49%;
+        font-size: 15px;
+    }
+
+    .input-suscribir__submit {
+        width: 35%;
+        font-size: 12px;
+    }
+
+
+    .pie-pagina__conocenos {
+        margin-bottom: 40px;
+    }
+
+
+    .pie-pagina__contactenos {
+        margin-bottom: 40px;
+    }
+
+
+    .pie-pagina__suscribete form {
+        margin-bottom: 40px;
+    }
+
+    .pie-pagina__final {
+        justify-content: flex-end;
+        margin-top: 0;
+    }
+
+    .pie-pagina__final {
+        width: 93%;
+
+    }
+}

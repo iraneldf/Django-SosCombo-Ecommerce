@@ -1,0 +1,213 @@
+{% extends 'pages/includes/base.html' %}
+{% load static %}
+{% block css %}
+    <link href="{% static 'css/paginasSecundarias.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/modalTusOrdenes.css' %}" rel="stylesheet" type="text/css">
+{% endblock %}
+{% block content %}
+    <section class="pago-contenedor pagina-secundaria__contenedor">
+        <h2>DETALLES DEL ENVÍO</h2>
+
+        <form action="#" class="form-pago">
+            <p>Nombre y Apellidos</p>
+            <input class="input-simple" type="text" required>
+            <p>Correo electrónico</p>
+            <input class="input-simple" type="email" required>
+            <p>Teléfono</p>
+            <input class="input-simple" type="tel" required>
+            <p>País</p>
+            <input class="input-simple" type="text" required>
+            <p>Ciudad</p>
+            <input class="input-simple" type="text" required>
+            <p>Dirección</p>
+            <input class="input-simple" type="text" required>
+
+
+            <h2>RESUMEN DEL PEDIDO</h2>
+            <div class="resumen-pedido">
+                <p>Subtotal</p>
+                <p id="subtotal"></p>
+            </div>
+            <div class="resumen-pedido">
+                <p>Precio del envío</p>
+                <p>$ {{ general.precio }}</p>
+            </div>
+            <div class="resumen-pedido total__pago">
+                <p class="resartar">Total</p>
+                <p class="resartar" id="total"></p>
+            </div>
+
+            {#            <h3>SELECCIONE SU FORMA DE PAGO</h3>#}
+            {#            <div class="forma-pago__pago">#}
+            {#                <div class="tarjeta-contenedor">#}
+            {#                    <input type="radio" id="tarjeta1" hidden value="tarjeta1">#}
+            {#                    <img class="img-tarjetas tarjeta3" src="{% static 'img/tarjetas-05.jpg' %}">#}
+            {#                    <div class="selector-tarjeta invertir" id="selectorTarjeta1" hidden>#}
+            {#                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px"#}
+            {#                             fill="#e77f5c">#}
+            {#                            <path d="M24 24H0V0h24v24z" fill="none" opacity=".87"/>#}
+            {#                            <path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6-1.41-1.41z"/>#}
+            {#                        </svg>#}
+            {#                    </div>#}
+            {#                </div>#}
+            {#                <div class="tarjeta-contenedor">#}
+            {#                    <input type="radio" id="tarjeta2" hidden value="tarjeta2">#}
+            {#                    <img class="img-tarjetas tarjeta3" src="{% static 'img/tarjetas-06.jpg' %}">#}
+            {#                    <div class="selector-tarjeta invertir" id="selectorTarjeta2" hidden>#}
+            {#                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px"#}
+            {#                             fill="#e77f5c">#}
+            {#                            <path d="M24 24H0V0h24v24z" fill="none" opacity=".87"/>#}
+            {#                            <path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6-1.41-1.41z"/>#}
+            {#                        </svg>#}
+            {#                    </div>#}
+            {#                </div>#}
+            {#                <div class="tarjeta-contenedor">#}
+            {#                    <input type="radio" id="tarjeta3" hidden checked value="tarjeta3">#}
+            {#                    <img class="img-tarjetas tarjeta3" src="{% static 'img/tarjetas-07.jpg' %}">#}
+            {#                    <div class="selector-tarjeta invertir" id="selectorTarjeta3">#}
+            {#                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px"#}
+            {#                             fill="#e77f5c">#}
+            {#                            <path d="M24 24H0V0h24v24z" fill="none" opacity=".87"/>#}
+            {#                            <path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6-1.41-1.41z"/>#}
+            {#                        </svg>#}
+            {#                    </div>#}
+            {#                </div>#}
+            {#                <div class="tarjeta-contenedor">#}
+            {#                    <input type="radio" id="tarjeta4" hidden value="tarjeta4">#}
+            {#                    <img class="img-tarjetas tarjeta4" src="{% static 'img/tarjetas-08.jpg' %}">#}
+            {#                    <div class="selector-tarjeta invertir" id="selectorTarjeta4" hidden>#}
+            {#                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px"#}
+            {#                             fill="#e77f5c">#}
+            {#                            <path d="M24 24H0V0h24v24z" fill="none" opacity=".87"/>#}
+            {#                            <path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6-1.41-1.41z"/>#}
+            {#                        </svg>#}
+            {#                    </div>#}
+            {#                </div>#}
+            {#            </div>#}
+
+            <div class="condiciones-uso">
+                <input type="checkbox" required><label>Acepto los términos y condiciones de uso.</label>
+            </div>
+
+
+            <input type="submit" value="PAGAR" class="btnPagar-submit">
+            <!-- boton de paypal -->
+            <div id="paypal-button-container">
+            </div>
+
+
+        </form>
+
+    </section>
+{% endblock %}
+
+{% block ExtrasJS %}
+    <script>
+
+
+        window.addEventListener('load', multiply)
+        window.addEventListener('load', total_sum)
+
+        var result = 0
+        var asd = 0
+
+
+        function multiply() {
+            {% for key,value in request.session.cart.items %}
+                result = parseFloat({{ value.quantity }}) * parseFloat({{ value.product.precio }});
+                document.getElementById("resultado{{ value.product.id }}").innerHTML = result.toFixed(2);
+            {% endfor %}
+        }
+
+        function total_sum() {
+            let sum = 0
+            {% for key,value in request.session.cart.items %}
+                asd = parseFloat({{ value.quantity }}) * parseFloat({{ value.product.precio|safe  }})
+                sum = sum + asd;
+            {% endfor %}
+            document.getElementById("subtotal").innerHTML = "$" + sum.toFixed(2);
+            document.getElementById("total").innerHTML = "$" + (sum + parseFloat({{  general.precio|safe }})).toFixed(2);
+            return parseFloat(sum + parseFloat({{ general.precio|safe }}))
+        }
+
+    </script>
+
+    <script src="https://www.paypal.com/sdk/js?client-id={{ general.id_paypal|safe }}&locale=es_ES&currency=USD"></script>
+    <script src="{% static 'js/pago.js' %}"></script>
+        <script>
+
+
+            function ajaxFunction(url, parameters, type, callback, async = true) {
+                $.ajax({
+                    url: url,
+                    type: type,
+                    data: parameters,
+                    dataType: 'json',
+                    processData: false,
+                    contentType: false,
+                    async: async
+                })
+                    .done(function (data) {
+                        // callback(data)
+                        if (!data.hasOwnProperty('error')) {
+                            callback(data)
+                            return false
+                        }
+                    })
+                    .fail(function (jqXHR, textStatus, errorThrown) {
+                        alert(textStatus + ': ' + errorThrown)
+                    })
+                    .always(function (data) {
+                    })
+            }
+
+
+            {#paypal.Buttons({#}
+            {#    createOrder: function (data, actions) {#}
+            {#        return actions.order.create({#}
+            {#            purchase_units: [{#}
+            {#                amount: {#}
+            {#                    value: total_sum(),#}
+            {#                },#}
+            {#            }]#}
+            {##}
+            {#        });#}
+            {#    },#}
+            {#    onApprove: function (data, actions) {#}
+            {#        // This function captures the funds from the transaction.#}
+            {#        return actions.order.capture().then(function (details) {#}
+            {##}
+            {#            {% for key,value in request.session.cart.items %}#}
+            {#                ajaxFunction('{% url 'aumentar_venta' value.product.id value.quantity %}', {#}
+            {#                    'id': '{{value.product.id}}',#}
+            {#                    'quantity': '{{ value.quantity }}'#}
+            {#                }, 'POST', response => {#}
+            {#                    console.log(response)#}
+            {#                })#}
+            {#                $.ajax(#}
+            {#                    {#}
+            {#                        url: '{% url '' %}',#}
+            {#                        type: 'POST',#}
+            {#                        data: {#}
+            {#                            product: '{{value.product.nombre}}',#}
+            {#                            price: {{ value.product.precio }},#}
+            {#                            quantity: {{ value.quantity|safe }},#}
+            {#                            total_price:#}
+            {#                            {{ value.product.precio|safe }}*{{ value.quantity|safe }}+{{ general.precio|safe  }},#}
+            {#                            name: document.getElementById('first-name-input').value + ' ' + document.getElementById('last-name-input').value,#}
+            {#                            email: document.getElementById('email-input').value,#}
+            {#                            address: document.getElementById('address-input').value,#}
+            {#                            town: document.getElementById('town-input').value,#}
+            {#                            country: document.getElementById('zipcode-input').value,#}
+            {#                            phone: document.getElementById('phone-input').value,#}
+            {#                        },#}
+            {#                        dataType: 'json'#}
+            {#                    })#}
+            {#            {% endfor %}#}
+            {##}
+            {#        });#}
+            {#    }#}
+            {#}).render('#paypal-button-container');#}
+        </script>
+{% endblock %}
+

@@ -1,0 +1,246 @@
+{% extends 'pages/includes/base.html' %}
+{% load static %}
+{% block css %}
+    <style>
+        {% if request.session.cart.items %}
+            {% for key,value in request.session.cart.items %}
+                #modal-eliminar-carrito{{ value.product.id }} {
+                    flex-direction: column;
+                    justify-content: center;
+                    padding-top: 0;
+
+                }
+            {% endfor %}
+        {% endif %}
+
+        #modal-eliminar-carrito {
+            flex-direction: column;
+            justify-content: center;
+            padding-top: 0;
+
+        }
+    </style>
+
+    <link href="{% static 'css/paginasSecundarias.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/modalTusOrdenes.css' %}" rel="stylesheet" type="text/css">
+{% endblock %}
+{% block content %}
+    <!-- ****************************************** -->
+    {% if request.session.cart.items %}
+        <section class="carrito-lleno-contenedor pagina-secundaria__contenedor justify-center align-center">
+            <h2 class="tusOrdenes">SU CARRITO</h2>
+
+            {######BOTON DE VACIAR CARRITO########}
+            <img src="{% static 'img/Iconos/icons8-basura-64 (1).png' %}"
+                 class="boton-vaciar"
+                 onclick="document.getElementById('modal-eliminar-carrito').style.display='flex';"
+                 style="border-radius: 6px" aria-hidden="true"></img>
+            {####################################}
+
+            <article class="contenedor-productos-carrito">
+                {% for key,value in request.session.cart.items %}
+                    <div class="plantilla-carrito__contenedor-principal">
+                        <div class="plantilla-contenido">
+                            <img class="foto-producto__plantilla" alt="foto producto"
+                                 src="{{ value.product.imagen }}">
+                            <div class="propiedades-producto__plantilla">
+                                <p class="nombre-producto__plantilla">{{ value.product.nombre }}</p>
+                                <p class="precio-producto__plantilla">$ {{ value.product.precio }}</p>
+
+                                <div class="contar-producto__plantilla">
+                                    <button class="btn-contar restar"
+                                            id="id{{ value.product.id }}"
+                                            type="button"
+                                            onclick="disminuir({{ value.product.id }});
+                                                    mostrarMoldalEliminar('#modal-eliminar-carrito{{ value.product.id }}',
+                                                    '.id{{ value.product.id }}');
+                                                    quantityMenorq1({{ value.quantity }});
+                                                    "
+
+
+                                    >&minus;
+                                    </button>
+                                    <div id="contador" class="id{{ value.product.id }}">{{ value.quantity }}</div>
+                                    <button class="btn-contar sumar"
+                                            id="id{{ value.product.id }}"
+                                            type="button"
+                                            onclick="aumentar({{ value.product.id }});location.reload();">
+                                        &plus;
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <label onclick="document.getElementById('modal-eliminar-carrito{{ value.product.id }}').style.display='flex';"
+                               class="btn-eliminar-producto">&times;</label>
+                    </div>
+                {% endfor %}
+
+            </article>
+
+
+            <article class="resumen-pedido-carrito">
+
+                <h2>RESUMEN DEL PEDIDO</h2>
+                <div class="resumen-pedido">
+                    <p>Subtotal</p>
+                    <p id="subtotal"></p>
+                </div>
+                <div class="resumen-pedido">
+                    <p>Precio del envío</p>
+                    <p>$ {{ general.precio }}</p>
+                </div>
+                <div class="resumen-pedido total__pago">
+                    <p class="resartar">Total</p>
+                    <p class="resartar" id="total"></p>
+                </div>
+                <div class="btn-resumen-pedido">
+                    <a class="btn-resumen-pedido__carrito seguir-comprando__carrito" href="{% url 'productos' %}">SEGUIR
+                        COMPRANDO</a>
+                    <a class="btn-resumen-pedido__carrito pagar__carrito" href="{% url 'pago' %}">REALIZAR PAGO</a>
+                </div>
+            </article>
+
+
+        </section>
+
+    {% else %}
+        <section class="carrito-vacio-contenedor">
+        <article class="productos-en-carrito-vacio pagina-secundaria__contenedor">
+        <img class="carrito-vacio-icono" src="{% static 'img/Iconos/carrito_vacio.svg' %}">
+        <p>Su carrito está vacío</p>
+    {% endif %}
+
+
+</article>
+</section>
+{% endblock %}
+
+
+{% block footer %}
+    {% if request.session.cart.items %}
+        {% for key,value in request.session.cart.items %}
+            <div id="modal-eliminar-carrito{{ value.product.id }}" class="modal">
+                <form class="form-modal-carrito" action="#">
+                    <div class="modal-carrito-contenedor">
+                        <p>¿Está seguro que desea eliminar este producto del carrito?</p>
+                        <div class="btn-modal-carrito-contenedor">
+                            <button type="button"
+                                    onclick="document.getElementById('modal-eliminar-carrito{{ value.product.id }}').style.display='none'"
+                                    class="btn-cancelar">Cancelar
+                            </button>
+                            <button type="button"
+                                    onclick="eliminar({{ value.product.id }});document.getElementById('modal-eliminar-carrito{{ value.product.id }}').style.display='none';"
+                                    class="btn-aceptar">Aceptar
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        {% endfor %}
+    {% endif %}
+    {# Modal para vaciar carrito   #}
+    <div id="modal-eliminar-carrito" class="modal">
+        <form class="form-modal-carrito" action="{% url 'cart_clear' %}" method="post">
+            {% csrf_token %}
+            <div class="modal-carrito-contenedor">
+                <p>¿Está seguro que desea vaciar el carrito?</p>
+                <div class="btn-modal-carrito-contenedor">
+                    <button type="button"
+                            onclick="document.getElementById('modal-eliminar-carrito').style.display='none'"
+                            class="btn-cancelar">Cancelar
+                    </button>
+                    <button type="submit"
+                            onclick="document.getElementById('modal-eliminar-carrito').style.display='none';"
+                            class="btn-aceptar">Aceptar
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+
+{% endblock %}
+
+{% block ExtrasJS %}
+
+    <script>
+
+
+        window.addEventListener('load', multiply)
+        window.addEventListener('load', total_sum)
+
+        var result = 0
+        var asd = 0
+
+        function quantityMenorq1(q) {
+
+            if (q > 1) {
+                location.reload()
+            }
+
+
+        }
+
+        function multiply() {
+            {% for key,value in request.session.cart.items %}
+                result = parseFloat({{ value.quantity }}) * parseFloat({{ value.product.precio }});
+                document.getElementById("resultado{{ value.product.id }}").innerHTML = result.toFixed(2);
+            {% endfor %}
+        }
+
+        function total_sum() {
+            let sum = 0
+            {% for key,value in request.session.cart.items %}
+                asd = parseFloat({{ value.quantity }}) * parseFloat({{ value.product.precio|safe }})
+                sum = sum + asd;
+            {% endfor %}
+            document.getElementById("subtotal").innerHTML = "$" + sum.toFixed(2);
+            document.getElementById("total").innerHTML = "$" + (sum + parseFloat({{  general.precio|safe }})).toFixed(2);
+            return parseFloat(sum + parseFloat({{ general.precio|safe }}))
+        }
+
+        function aumentar(id) {
+            $.ajax(
+                {
+                    url: '{% url 'cart_add' %}',
+                    type: 'POST',
+                    data: {id: id},
+                    dataType: 'json'
+                }
+            )
+        }
+
+        function disminuir(id) {
+            $.ajax(
+                {
+                    url: '{% url 'cart_remove' %}',
+                    type: 'POST',
+                    data: {id: id},
+                    dataType: 'json'
+                }
+            )
+        }
+
+        function eliminar(id) {
+            $.ajax(
+                {
+                    url: '{% url 'cart_clear_id' %}',
+                    type: 'POST',
+                    data: {id: id},
+                    dataType: 'json'
+                }
+            )
+            location.reload();
+
+        }
+
+        function mostrarMoldalEliminar(idModal, claseContador) {
+            if (document.querySelector(claseContador).textContent == 1) {
+                document.querySelector(claseContador).textContent = 2
+                document.querySelector(idModal).style.display = 'flex';
+            }
+        }
+
+    </script>
+{% endblock %}

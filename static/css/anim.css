@@ -1,0 +1,148 @@
+.btn-comprar:hover {
+    cursor: pointer;
+    background: var(--naranja__3);
+}
+
+.annadir-carrito:hover {
+    background: var(--naranja__2);
+}
+
+/*.annadir-carrito:active {
+    background: var(--naranja__3);
+}*/
+
+.input-suscribir__submit:hover {
+    background: var(--naranja__2);
+}
+
+.btn-verMas:hover {
+    background: var(--naranja__2);
+}
+
+.contactar-apartado-menu li form .input-suscribir__submit:hover {
+    background: var(--naranja__3);
+}
+
+
+#menu-principal ul li a:hover{
+    text-decoration: underline;
+}
+
+.contenedor-categorias__categorias-escritorio ul li {
+    cursor: default;
+}
+
+.contenedor-categorias__categorias-escritorio ul li ul li:hover {
+    cursor: pointer;
+    color: var(--naranja__2);
+}
+
+
+.cuenta-Usuario__contenedor .submit__cuenta-Usuario:hover {
+    background: var(--naranja__2);
+}
+
+.btn-ver-mas__contenedor a:hover {
+    background: var(--naranja__2);
+}
+
+.btn-resumen-pedido .pagar__carrito:hover {
+    background: var(--naranja__2);
+}
+
+.btn-resumen-pedido .seguir-comprando__carrito:hover {
+    border: 1px solid var(--naranja__2);
+    color: var(--naranja__2);
+}
+
+
+.annadir-carro__pagar a:hover {
+    background: var(--naranja__2);
+}
+
+
+/*.annadir-carro__pagar button:hover {*/
+/*    border: 1px solid var(--naranja__2);*/
+/*    color: var(--naranja__2);*/
+/*}*/
+
+
+.btn-aceptar:hover {
+    background: var(--naranja__2);
+}
+
+.btn-cancelar:hover {
+    border: 1px solid var(--naranja__2);
+    color: var(--naranja__2);
+}
+
+.btn-aceptar-ubi:hover {
+     background: var(--naranja__2);
+    color: white;
+}
+
+.btn-continuar:hover {
+    background: var(--naranja__2);
+}
+
+.btn-contar {
+    cursor: pointer;
+}
+
+.btn-contar:hover {
+    color: var(--naranja__2);
+}
+
+
+.contenedor-categorias__categorias-escritorio ul li svg {
+    cursor: pointer;
+}
+
+.navBar__menu-ubicacion label {
+    cursor: pointer;
+}
+
+.campo-modal-ubicacion button svg {
+    cursor: pointer;
+}
+
+
+  @keyframes carrito-animate {
+    0%,100%{
+        background-image: url("../img/Iconos/carritoAnnadir.svg");
+        background-color: var(--naranja__1);
+
+    }
+    50%{
+        background-image: url("../img/Iconos/palomita.svg");
+        background-color: var(--naranja__2);
+        width: 37px;
+        height: 37px;
+    }
+    }
+
+    @keyframes añadir-boton-animate {
+        0%,100%{
+            background-color: var(--naranja__1);
+            background-position: 50% 50%;
+        }
+        10%,99%{
+            background-image: url("../img/Iconos/palomita.svg");
+            background-color: var(--naranja__2);
+            background-repeat: no-repeat;
+            background-position: 50% 50%;
+        }
+        }
+
+.btn-cerrar-menu svg:hover {
+    fill: var(--naranja__3);
+}
+
+@media screen and (max-width: 700px) {
+    .btn-cerrar-menu svg:hover {
+        fill: #fff;
+    }
+
+}
+
+

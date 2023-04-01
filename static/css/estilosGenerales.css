@@ -1,0 +1,57 @@
+/* Variables para colores */
+:root{
+  --blancoEspecial: #f7f1f1;
+	--naranja__1: #e77f5c;
+	--naranja__2: #EE5C2C;
+	--naranja__3: #D63B08;
+  --grisClaro: #e2dede;
+  --grisMedio: #bcb6b6;
+  --grisOscuro: #646262;
+  --rojoFuerte: #E73900;
+}
+
+
+
+
+*{
+  margin: 0;
+  padding: 0;
+  font-family: 'Lato', sans-serif;
+}
+
+a{
+  text-decoration: none;
+  color: #000;
+  user-select: none;
+}
+
+p {
+  line-height: 1.5;
+}
+
+li{
+  list-style: none;
+}
+
+button {
+  border: none;
+  background: #fff;
+  user-select: none;
+}
+
+input {
+  border: none;
+}
+
+.resartar {
+  font-weight: 800;
+}
+
+.subrayar {
+  line-height: 1.5;
+  text-decoration: underline;
+}
+
+.invertir {
+  transform: rotate(180deg);
+}

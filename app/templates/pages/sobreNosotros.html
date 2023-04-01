@@ -1,0 +1,30 @@
+{% extends 'pages/includes/base.html' %}
+{% load static %}
+{% block css %}
+    <link href="{% static 'css/paginasSecundarias.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/modalTusOrdenes.css' %}" rel="stylesheet" type="text/css">
+{% endblock %}
+{% block content %}
+
+    <section class="sobreNosotros__contenedor pagina-secundaria__contenedor">
+        <h2>SOBRE NOSOTROS</h2>
+
+        <div class="cuadro__pagina-secundaria">
+            <p>Realizamos estudios de mercado para descubrir qué tipo de productos tienen una gran demanda. Una vez que
+                determinamos esto, negociamos con las fábricas que producen estos productos y los compramos en conjunto
+                directamente de la fuente. Gracias a este proceso, podemos influir en el diseño y el embalaje de los
+                productos, lo que nos permite optimizar todo el proceso. Esto significa que al final nuestro cliente
+                pagará un precio muy razonable por nuestros productos.</p>
+            <p>Tenemos influencia sobre todo el proceso de producción y transportación, lo que nuevamente hace que el
+                precio que pagas como cliente sea muy favorable.</p>
+        </div>
+        <div class="cuadro__pagina-secundaria">
+            <h3>Nuestro objetivo</h3>
+            <p>Los clientes son cada vez más conscientes sobre los precios, y SOSCOMBOS facilita este desarrollo al
+                ofrecer productos a precios competitivos. Nuestro objetivo es hacer que todos estos productos sean
+                accesibles para la mayor cantidad de clientes posible.</p>
+        </div>
+    </section>
+
+{% endblock %}
+

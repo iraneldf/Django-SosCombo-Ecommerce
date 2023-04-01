@@ -1,0 +1,94 @@
+{% extends 'pages/includes/base.html' %}
+{% load static %}
+{% block css %}
+    <link href="{% static 'css/paginasSecundarias.css' %}" rel="stylesheet" type="text/css">
+{% endblock %}
+{% block content %}
+
+    {#############################Contenido ##############################}
+    <section class="verProducto__producto__contenedor pagina-secundaria__contenedor">
+        <article class="verProducto">
+            <img alt="foto producto" src="{{ object.imagen.url }}" style="width: 300px;height: 300px;">
+            <div>
+                <div class="informacion-contar">
+                    <div class="informacion-producto">
+                        <h3>{{ object.nombre }}</h3>
+                        <p>$ {{ object.precio }}</p>
+                    </div>
+                    <div class="contar-producto">
+                        <button class="btn-contar restar" id="platano" type="button">&minus;</button>
+                        <div id="contador" class="platano">1</div>
+                        <button class="btn-contar sumar" id="platano" type="button">&plus;</button>
+                    </div>
+                </div>
+                <!-- Ver detalles ***************************************************************************************
+                ***********************************
+            ******************************** -->
+
+                <p class="tiempo-entrega__producto">Tiempo de entrega: De 0 a 8 días</p>
+                <div class="annadir-carro__pagar">
+                    <button class="annadir-carro" id="botonAnnadir" type="button"
+                            onclick="addCarrito({{ object.id }},
+                                    document.querySelector('#contador').textContent)">AÑADIR
+                    </button>
+                    <button class="pagar-verProducto" id="botonPagar"><a class="pagar" href="./pago.html">PAGAR</a></button>
+                </div>
+            </div>
+        </article>
+    </section>  
+
+    {###############################INICIE SU COMPRA########################}
+    <section class="inicie-compra mejores-productos__contenedor">
+        <h2 class="">INICIE SU COMPRA</h2>
+
+
+        <div class="iniciar-compra__ver-producto margen-alineador">
+            {% include 'pages/includes/productos/ultimos8productos.html' %}
+        </div>
+        <div class="btn-ver-mas__contenedor">
+            <a type="button" class="btn-ver-mas__inicie-compra" href="{% url 'productos' %}">VER MÁS</a>
+        </div>
+    </section>
+
+{% endblock %}
+
+{% block ExtrasJS %}
+    <script>
+        function addCarrito(id, quantity) {
+            $.ajax(
+                {
+                    url: '{% url 'cartAjax'  %}',
+                    type: 'POST',
+                    data: {id: id, quantity: quantity},
+                    dataType: 'json'
+                }
+            )
+        }
+          {#OCULTAR Y MOSTRAR EL BOTON ANNADIR#}
+    window.addEventListener('click', (e) => {
+            if (e.composedPath()[0].classList[0] == 'btn-contar') {
+                const botonAnnadir = document.querySelector('#botonAnnadir');
+                const botonPagar = document.querySelector('#botonPagar');
+                const contenedor = document.querySelector('#contador');
+
+                botonAnnadir.classList.remove('ocultar');
+
+                if (e.composedPath()[0].classList[1] == 'restar') {
+                    if (contenedor.textContent == 1 || contenedor.textContent == 0) {
+                        botonAnnadir.classList.add('ocultar')
+                        botonPagar.classList.add('ocultar')
+                    }
+                } else if (e.composedPath()[0].classList[1] == 'sumar') {
+                    if (contenedor.textContent != 0) {
+                        botonAnnadir.classList.remove('ocultar')
+                        botonPagar.classList.remove('ocultar')
+                    }
+                }
+
+
+            }
+        }
+    )
+    ;
+    </script>
+{% endblock %}

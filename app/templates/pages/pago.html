@@ -98,7 +98,7 @@
             <input type="submit" value="PAGAR" class="btnPagar-submit">
 
             <!-- boton de paypal -->
-            <div id="paypal-button-container" type="submit"></div>
+            <div id="paypal-button-container"></div>
 
 
         </form>
@@ -115,6 +115,9 @@
                         }]
 
                     });
+                }, onCancel: function (data) {
+                    alert('cancelado');
+                    console.log(data);
                 }, onApprove: function (data, actions) {
                     // This function captures the funds from the transaction.
                     return actions.order.capture().then(function (details) {

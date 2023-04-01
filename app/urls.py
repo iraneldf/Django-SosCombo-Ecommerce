@@ -19,7 +19,7 @@ urlpatterns = [
     # custom
     path("sales/add/<id>/<quantity>", aumentar_ventas, name="aumentar_venta"),
     path("venta/add", registar_venta, name="registar_venta"),
-    # path("venta/mail", new_purchase_mail, name="venta_mail")
+    path("venta/mail", new_purchase_mail, name="venta_mail")
 
 ]
 # urls de cart

@@ -1,5 +1,10 @@
 {% extends 'pages/includes/base.html' %}
 {% load static %}
+
+{% block head %}
+    <script src="https://www.paypal.com/sdk/js?client-id=ATspMFCgzu8nu_vaKoeJBQL8KzTpHJO-7E8HqonAqV9rwtgxcRt3uWFxPQ-QphbDN2RwYX4BomOJhF1A&locale=es_ES&currency=USD"></script>
+{% endblock %}
+
 {% block css %}
     <link href="{% static 'css/paginasSecundarias.css' %}" rel="stylesheet" type="text/css">
     <link href="{% static 'css/modalTusOrdenes.css' %}" rel="stylesheet" type="text/css">
@@ -10,17 +15,17 @@
 
         <form action="#" class="form-pago">
             <p>Nombre y Apellidos</p>
-            <input class="input-simple" type="text" required>
+            <input id="first-name-input" class="input-simple" type="text" required>
             <p>Correo electrónico</p>
-            <input class="input-simple" type="email" required>
+            <input id="email-input" class="input-simple" type="email" required>
             <p>Teléfono</p>
-            <input class="input-simple" type="tel" required>
+            <input id="phone-input" class="input-simple" type="tel" required>
             <p>País</p>
-            <input class="input-simple" type="text" required>
+            <input id="country-input" class="input-simple" type="text" required>
             <p>Ciudad</p>
-            <input class="input-simple" type="text" required>
+            <input id="city-input" class="input-simple" type="text" required>
             <p>Dirección</p>
-            <input class="input-simple" type="text" required>
+            <input id="address-input" class="input-simple" type="text" required>
 
 
             <h2>RESUMEN DEL PEDIDO</h2>
@@ -30,7 +35,7 @@
             </div>
             <div class="resumen-pedido">
                 <p>Precio del envío</p>
-                <p>$ {{ general.precio }}</p>
+                <p>$ {{ general.precio|safe }}</p>
             </div>
             <div class="resumen-pedido total__pago">
                 <p class="resartar">Total</p>
@@ -91,19 +96,106 @@
 
 
             <input type="submit" value="PAGAR" class="btnPagar-submit">
+
             <!-- boton de paypal -->
-            <div id="paypal-button-container">
-            </div>
+            <div id="paypal-button-container" type="submit"></div>
 
 
         </form>
+        <script
+                src="https://www.paypal.com/sdk/js?client-id={{ general.id_paypal|safe }}&locale=es_ES&currency=USD"></script>
+        <script>
+            paypal.Buttons({
+                createOrder: function (data, actions) {
+                    return actions.order.create({
+                        purchase_units: [{
+                            amount: {
+                                value: total_sum(),
+                            },
+                        }]
+
+                    });
+                }, onApprove: function (data, actions) {
+                    // This function captures the funds from the transaction.
+                    return actions.order.capture().then(function (details) {
+                        {% for key,value in request.session.cart.items %}
+                            ajaxFunction('{% url 'aumentar_venta' value.product.id value.quantity %}', {
+                                'id': '{{value.product.id}}',
+                                'quantity': '{{ value.quantity }}'
+                            }, 'POST', response => {
+                                console.log(response)
+                            })
+                            $.ajax(
+                                {
+                                    url: '{% url 'registar_venta' %}',
+                                    type: 'POST',
+                                    data: {
+                                        product: '{{value.product.nombre}}',
+                                        price: {{ value.product.precio|safe  }},
+                                        quantity: {{ value.quantity|safe }},
+                                        total_price:
+                                        {{ value.product.precio|safe }}*{{ value.quantity|safe }}+{{ general.precio|safe }},
+                                        name: document.getElementById('first-name-input').value,
+                                        email: document.getElementById('email-input').value,
+                                        phone: document.getElementById('phone-input').value,
+                                        country: document.getElementById('country-input').value,
+                                        city: document.getElementById('city-input').value,
+                                        address: document.getElementById('address-input').value,
+                                    },
+                                    dataType: 'json'
+                                })
+                        {% endfor %}
+                        $.ajax(
+                            {
+                                url: '{% url 'venta_mail' %}',
+                                type: 'POST',
+                                data: {
+                                    name: document.getElementById('first-name-input').value,
+                                    email: document.getElementById('email-input').value,
+                                    phone: document.getElementById('phone-input').value,
+                                    address: document.getElementById('address-input').value,
+                                },
+                                dataType: 'json'
+                            })
+
+                    });
+                }
+            }).render('#paypal-button-container');
+
+        </script>
 
     </section>
+
 {% endblock %}
 
 {% block ExtrasJS %}
+
+    {#    <script src="{% static 'js/pago.js' %}"></script>#}
     <script>
 
+        function ajaxFunction(url, parameters, type, callback, async = true) {
+            $.ajax({
+                url: url,
+                type: type,
+                data: parameters,
+                dataType: 'json',
+                processData: false,
+                contentType: false,
+                async: async
+            })
+                .done(function (data) {
+                    // callback(data)
+                    if (!data.hasOwnProperty('error')) {
+                        callback(data)
+                        return false
+                    }
+                })
+                .fail(function (jqXHR, textStatus, errorThrown) {
+                    alert(textStatus + ': ' + errorThrown)
+                })
+                .always(function (data) {
+                })
+        }
 
         window.addEventListener('load', multiply)
         window.addEventListener('load', total_sum)
@@ -114,7 +206,7 @@
 
         function multiply() {
             {% for key,value in request.session.cart.items %}
-                result = parseFloat({{ value.quantity }}) * parseFloat({{ value.product.precio }});
+                result = parseFloat({{ value.quantity|safe }}) * parseFloat({{ value.product.precio|safe  }});
                 document.getElementById("resultado{{ value.product.id }}").innerHTML = result.toFixed(2);
             {% endfor %}
         }
@@ -131,83 +223,5 @@
         }
 
     </script>
-
-    <script src="https://www.paypal.com/sdk/js?client-id={{ general.id_paypal|safe }}&locale=es_ES&currency=USD"></script>
-    <script src="{% static 'js/pago.js' %}"></script>
-        <script>
-
-
-            function ajaxFunction(url, parameters, type, callback, async = true) {
-                $.ajax({
-                    url: url,
-                    type: type,
-                    data: parameters,
-                    dataType: 'json',
-                    processData: false,
-                    contentType: false,
-                    async: async
-                })
-                    .done(function (data) {
-                        // callback(data)
-                        if (!data.hasOwnProperty('error')) {
-                            callback(data)
-                            return false
-                        }
-                    })
-                    .fail(function (jqXHR, textStatus, errorThrown) {
-                        alert(textStatus + ': ' + errorThrown)
-                    })
-                    .always(function (data) {
-                    })
-            }
-
-
-            {#paypal.Buttons({#}
-            {#    createOrder: function (data, actions) {#}
-            {#        return actions.order.create({#}
-            {#            purchase_units: [{#}
-            {#                amount: {#}
-            {#                    value: total_sum(),#}
-            {#                },#}
-            {#            }]#}
-            {##}
-            {#        });#}
-            {#    },#}
-            {#    onApprove: function (data, actions) {#}
-            {#        // This function captures the funds from the transaction.#}
-            {#        return actions.order.capture().then(function (details) {#}
-            {##}
-            {#            {% for key,value in request.session.cart.items %}#}
-            {#                ajaxFunction('{% url 'aumentar_venta' value.product.id value.quantity %}', {#}
-            {#                    'id': '{{value.product.id}}',#}
-            {#                    'quantity': '{{ value.quantity }}'#}
-            {#                }, 'POST', response => {#}
-            {#                    console.log(response)#}
-            {#                })#}
-            {#                $.ajax(#}
-            {#                    {#}
-            {#                        url: '{% url '' %}',#}
-            {#                        type: 'POST',#}
-            {#                        data: {#}
-            {#                            product: '{{value.product.nombre}}',#}
-            {#                            price: {{ value.product.precio }},#}
-            {#                            quantity: {{ value.quantity|safe }},#}
-            {#                            total_price:#}
-            {#                            {{ value.product.precio|safe }}*{{ value.quantity|safe }}+{{ general.precio|safe  }},#}
-            {#                            name: document.getElementById('first-name-input').value + ' ' + document.getElementById('last-name-input').value,#}
-            {#                            email: document.getElementById('email-input').value,#}
-            {#                            address: document.getElementById('address-input').value,#}
-            {#                            town: document.getElementById('town-input').value,#}
-            {#                            country: document.getElementById('zipcode-input').value,#}
-            {#                            phone: document.getElementById('phone-input').value,#}
-            {#                        },#}
-            {#                        dataType: 'json'#}
-            {#                    })#}
-            {#            {% endfor %}#}
-            {##}
-            {#        });#}
-            {#    }#}
-            {#}).render('#paypal-button-container');#}
-        </script>
 {% endblock %}
 

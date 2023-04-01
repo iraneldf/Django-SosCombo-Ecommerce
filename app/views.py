@@ -2,6 +2,7 @@ from datetime import timezone
 from urllib import request
 
 from _queue import Empty
+from django.core.mail import send_mail
 from django.http import HttpRequest, JsonResponse
 from django.shortcuts import render, redirect
 from django.utils.decorators import method_decorator
@@ -17,6 +18,15 @@ from SosCombos_Django.settings import CART_SESSION_ID
 from app import models
 from app.models import subscripciones
 from cart.cart import Cart
+
+
+def send_purchase_mail(nombre, email_usuario, fecha, telefono, direccion):
+    send_mail(
+        'Nueva compra en ' + models.general.objects.first().titulo + '.',
+        'Nueva compra, datos de compra:\nNombre:\n' + nombre + ';\nCorreo:\n' + email_usuario + ';\nFecha: \n' + fecha + ';\nTeléfono:\n' + telefono + ';\nDirección:\n' + direccion + '.',
+        settings.EMAIL_HOST_USER,
+        [models.contactenos.objects.email, ],
+    )
 
 
 def get_qs(self, qs):
@@ -76,7 +86,7 @@ def get_qs(self, qs):
         if ord == "Mayor Precio":
             qs = qs.order_by('-precio')
         if ord == "Más vendidos":
-            qs = qs.order_by('-mejor')
+            qs = qs.order_by('-cantventas')
 
     return qs
 
@@ -353,16 +363,27 @@ def registar_venta(request: HttpRequest):
     total_price = request.POST['total_price']
     name = request.POST['name']
     email = request.POST['email']
-    address = request.POST['address']
-    town = request.POST['town']
-    country = request.POST['zipcode']
     phone = request.POST['phone']
+    country = request.POST['city']
+    city = request.POST['city']
+    address = request.POST['address']
 
     newventa = models.venta(producto=product, precio=price, cantidad=quantity,
                             precio_total=total_price, nombre=name, email=email,
-                            fecha=timezone.now(), direccion=address, ciudad=town,
+                            fecha=timezone.now(), direccion=address, ciudad=city,
                             pais=country, telefono=phone)
     newventa.save()
 
     return JsonResponse({"result": "ok",
                          })
+
+
+# nuevo correo de compra
+@method_decorator(csrf_exempt, require_POST)
+def new_purchase_mail(request: HttpRequest):
+    nombre = request.POST['nombre']
+    email_remitente = request.POST['email']
+    fecha = str(timezone.now())
+    telefono = request.POST['telefono']
+    direccion = request.POST['address']
+    send_purchase_mail(nombre, email_remitente, fecha, telefono, direccion)

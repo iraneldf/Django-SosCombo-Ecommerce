@@ -22,7 +22,6 @@ window.addEventListener('click', (e) => {
     if(e.composedPath()[0].classList[0] == 'btn-contar'){
         const contenedor = document.querySelector(`.${e.composedPath()[0].id}`);
         let valor = parseFloat(contenedor.innerText);
-        console.log(contenedor)
         if(e.composedPath()[0].classList[1] == 'restar'){
             if(valor > 0) {
                 valor--;

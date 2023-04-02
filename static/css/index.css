@@ -521,10 +521,19 @@
     transition: all 1s;
 }
 
-.pedidos-domicilio img {
-    display: none;
-    width: 100%;
-}
+
+/*@media screen and (max-width: 700px) {*/
+/*    .pedidos-domicilio {*/
+/*        width: 100%;*/
+/*        height: 100vh;*/
+/*        background-color: var(--blancoEspecial);*/
+/*    }*/
+/*}*/
+
+/*.pedidos-domicilio img {*/
+/*    display: none;*/
+/*    width: 100%;*/
+/*}*/
 
 .pedidos-domicilio__texto {
     display: none;
@@ -683,10 +692,9 @@
         height: auto;
     }
 
-    .pedidos-domicilio img {
-        display: block;
-    }
-
+    /*.pedidos-domicilio img {*/
+    /*    display: block;*/
+    /*}*/
     .pedidos-domicilio__texto {
         display: block;
         background: var(--blancoEspecial);
@@ -743,6 +751,11 @@
         padding: 0 0;
     }
 }
+
+@media screen and (max-width: 700px) {
+
+}
+
 
 /* @media screen and (max-width: 400px) {  
   .foto-producto{

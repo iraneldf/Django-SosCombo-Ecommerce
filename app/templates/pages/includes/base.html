@@ -39,13 +39,11 @@
 
     {#######################}
 
-
+    <script type="text/javascript" src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
 </head>
 
 <body>
-<script type="text/javascript" src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
-<script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
-<script src="{% static 'js/infinite.min.js' %}"></script>
+
 {% include 'pages/includes/navBar.html' %}
 {% block content %}
 
@@ -278,7 +276,6 @@
 
 <script>
     {#  COPIAR EN EL CORTAPAPELES  #}
-    window.addEventListener("load", C())
 
     function copyClipboard(element) {
         var $bridge = $("<input>")

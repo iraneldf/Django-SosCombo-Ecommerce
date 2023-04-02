@@ -54,7 +54,7 @@
                                             onclick="disminuir({{ value.product.id }});
                                                     mostrarMoldalEliminar('#modal-eliminar-carrito{{ value.product.id }}',
                                                     '.id{{ value.product.id }}');
-                                                    quantityMenorq1({{ value.quantity }});
+                                                    {#quantityMenorq1({{ value.quantity }});#}
                                                     "
 
 
@@ -64,7 +64,7 @@
                                     <button class="btn-contar sumar"
                                             id="id{{ value.product.id }}"
                                             type="button"
-                                            onclick="aumentar({{ value.product.id }});location.reload();">
+                                            onclick="aumentar({{ value.product.id }});">
                                         &plus;
                                     </button>
                                 </div>
@@ -173,19 +173,10 @@
         var result = 0
         var asd = 0
 
-        function quantityMenorq1(q) {
-
-            if (q > 1) {
-                location.reload()
-            }
-
-
-        }
-
         function multiply() {
             {% for key,value in request.session.cart.items %}
                 result = parseFloat({{ value.quantity }}) * parseFloat({{ value.product.precio }});
-                document.getElementById("resultado{{ value.product.id }}").innerHTML = result.toFixed(2);
+                {#document.getElementById("resultado{{ value.product.id }}").innerHTML = result.toFixed(2);#}
             {% endfor %}
         }
 
@@ -206,9 +197,31 @@
                     url: '{% url 'cart_add' %}',
                     type: 'POST',
                     data: {id: id},
-                    dataType: 'json'
+                    dataType: 'json',
+                    success: pintarAumentar(id)
                 }
             )
+
+        }
+
+        function pintarAumentar(id) {
+            let mult = 0, cant, precio, total = 0;
+            {% for key,value in request.session.cart.items %}
+                precio = {{ value.product.precio|safe }};
+                if (id === {{ value.product.id }}) {
+                    cant = document.querySelector('.id{{ value.product.id }}').innerHTML;
+                    cant = parseFloat(cant) + 1;
+                } else {
+                    cant = document.querySelector('.id{{ value.product.id }}').innerHTML;
+                }
+
+                mult = parseFloat(cant) * parseFloat(precio);
+                total = total + mult;
+
+            {% endfor %}
+            document.getElementById("subtotal").innerHTML = "$" + total.toFixed(2);
+            document.getElementById("total").innerHTML = "$" + (total + parseFloat({{  general.precio|safe }})).toFixed(2);
+
         }
 
         function disminuir(id) {
@@ -217,10 +230,39 @@
                     url: '{% url 'cart_remove' %}',
                     type: 'POST',
                     data: {id: id},
-                    dataType: 'json'
+                    dataType: 'json',
+                    success: pintarDisminuir(id)
                 }
             )
+
         }
+
+        function pintarDisminuir(id) {
+            let q = parseInt(document.querySelector('.id' + id).innerHTML);
+
+            if (q !== 1) {
+                let mult = 0, cant, precio, total = 0;
+                {% for key,value in request.session.cart.items %}
+                    precio = {{ value.product.precio|safe }};
+                    if (id === {{ value.product.id }}) {
+
+                        cant = document.querySelector('.id{{ value.product.id }}').innerHTML;
+                        cant = parseFloat(cant) - 1;
+                    } else {
+
+                        cant = document.querySelector('.id{{ value.product.id }}').innerHTML;
+                    }
+                    mult = parseFloat(cant) * parseFloat(precio);
+                    total = total + mult;
+                {% endfor %}
+
+                document.getElementById("subtotal").innerHTML = "$" + total.toFixed(2);
+                document.getElementById("total").innerHTML = "$" + (total + parseFloat({{  general.precio|safe }})).toFixed(2);
+
+            }
+
+        }
+
 
         function eliminar(id) {
             $.ajax(
@@ -241,6 +283,5 @@
                 document.querySelector(idModal).style.display = 'flex';
             }
         }
-
     </script>
 {% endblock %}

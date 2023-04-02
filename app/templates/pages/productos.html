@@ -50,181 +50,14 @@
     </style>
 {% endblock %}
 {% block content %}
-
     <section class="productos__contenedor-principal">
-        <article class="filtrar-productos">
-            <div class="iconos__filtro-flecha">
-                <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px"
-                     viewBox="0 0 24 24" width="24px" fill="#fff">
-                    <g>
-                        <path d="M0,0h24 M24,24H0" fill="none"/>
-                        <path
-                                d="M7,6h10l-5.01,6.3L7,6z M4.25,5.61C6.27,8.2,10,13,10,13v6c0,0.55,0.45,1,1,1h2c0.55,0,1-0.45,1-1v-6 c0,0,3.72-4.8,5.74-7.39C20.25,4.95,19.78,4,18.95,4H5.04C4.21,4,3.74,4.95,4.25,5.61z"/>
-                        <path d="M0,0h24v24H0V0z" fill="none"/>
-                    </g>
-                </svg>
-                <svg class="btn-menu-filtrar" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24"
-                     width="24px" fill="#fff">
-                    <path d="M24 24H0V0h24v24z" fill="none" opacity=".87"/>
-                    <path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6-1.41-1.41z"/>
-                </svg>
-
-                <div class="menu-filtrar">
-                    <form method="get" action="">
-                        <ul class="odenarli">
-                            <li><input name="ordenar" type="submit" value="Más vendidos"></li>
-                            <li><input name="ordenar" type="submit" value="Menor Precio"></li>
-                            <li><input name="ordenar" type="submit" value="Mayor Precio"></li>
-                        </ul>
-                    </form>
-                </div>
-            </div>
-            <div class="filtro-menu">
-                <p>Categorías</p>
-                <svg class="btn-filtrar__menu-producto1 " xmlns="http://www.w3.org/2000/svg" height="24px"
-                     viewBox="0 0 24 24" width="24px" fill="#000000">
-                    <path d="M24 24H0V0h24v24z" fill="none" opacity=".87"/>
-                    <path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6-1.41-1.41z"/>
-                </svg>
-                <svg class="btn-filtrar__menu-producto2 invertir ocultar-btn" xmlns="http://www.w3.org/2000/svg"
-                     height="24px" viewBox="0 0 24 24" width="24px" fill="#fff">
-                    <path d="M24 24H0V0h24v24z" fill="none" opacity=".87"/>
-                    <path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6-1.41-1.41z"/>
-                </svg>
-
-
-                <div class="menu-filtrar-categoria">
-                    <ul>
-                        <form method="get" action="">
-                            <input type="submit" id="limpiar_oculto" style="margin-top: 15px;"
-                                   name="clear_filter" value="Mostrar todos">
-                        </form>
-                        {% for cat in categorias %}
-                            <li class="categoria">
-                                {{ cat }}
-                                <svg class="btn-filtrar" xmlns="http://www.w3.org/2000/svg" height="24px"
-                                     viewBox="0 0 24 24" width="24px" fill="#fff">
-                                    <path d="M24 24H0V0h24v24z" fill="none" opacity=".87"/>
-                                    <path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6-1.41-1.41z"/>
-                                </svg>
-                            </li>
-                            {#RESPONSIVO#}
-                            <li class="subcategoria subcategoria-oculta">
-                                <ul>
-                                    {% for scat in subcategorias %}
-                                        {% if scat.categoria.categoria == cat.categoria %}
-                                            <form method="get" action="">
-                                                <li>
-                                                    <input type="submit"
-                                                           name="category"
-                                                           value="{{ scat.subcategoria }}"
-                                                           class="lista_subcAtResponsive">
-                                                </li>
-                                            </form>
-                                        {% endif %}
-                                    {% endfor %}
-                                </ul>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            </div>
-
-
-        </article>
-
-
-        <article class="categorias-productos-escritorio">
-            <h3>PRODUCTOS</h3>
-            <article class="caja-productos__paginador_completo">
-                {% include 'pages/includes/paginador.html' %}
-            </article>
-
-            <div class="ordenar__categorias-escritorio">
-                <p>Ordenar por</p>
-                <form action="" method="get">
-                    <label>
-                        <select name="ordenar" onchange="this.form.submit()">
-
-
-                            <option {% if request.session.ordenar == 'Menor Precio' %}selected{% endif %}
-                                    value="Menor Precio">Menor
-                                Precio
-                            </option>
-
-
-                            <option {% if request.session.ordenar == 'Mayor Precio' %}
-                                selected {% endif %}value="Mayor Precio">Mayor Precio
-                            </option>
-
-
-                            <option  {% if request.session.ordenar == 'Más vendidos' %} selected {% endif %}
-                                                                                        value="Más vendidos">Más
-                                vendidos
-                            </option>
-
-                        </select>
-                    </label>
-                </form>
-            </div>
-
-
-            <div class="contenedor-categorias__categorias-escritorio">
-
-
-                <h4>Categorías</h4>
-                <form method="get" action="">
-                    <input type="submit" id="limpiar" class="resartar" style="margin-top: 12px"
-                           name="clear_filter" value="mostrar todos">
-                </form>
-
-                <ul>
-                    {% for cat in categorias %}
-
-                        <li>
-                            {{ cat }}
-                            <svg class="btn_{{ cat.id }}" xmlns="http://www.w3.org/2000/svg"
-                                 height="24px" viewBox="0 0 24 24" width="24px" fill="#000">
-                                <path d="M24 24H0V0h24v24z" fill="none" opacity=".87"/>
-                                <path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6-1.41-1.41z"/>
-                            </svg>
-                        </li>
-
-                        <li class="_{{ cat.id }}categorias comidas-bebidas-oculto ocultar">
-
-                            <ul>
-
-                                {% for scat in subcategorias %}
-
-                                    {% if scat.categoria.categoria == cat.categoria %}
-                                        <form method="get" action="">
-                                            <li><input type="submit"
-                                                       name="category"
-                                                       value="{{ scat.subcategoria }}"
-                                                       class="lista_subcAt">
-                                            </li>
-                                        </form>
-                                    {% endif %}
-                                {% endfor %}
-
-                            </ul>
-
-                        </li>
-                    {% endfor %}
-                </ul>
-            </div>
-
-
-        </article>
-
-        <article class="caja-productos">
-            {% include 'pages/includes/productos/todosLosProductosContenedor.html' %}
-            {#            {% include 'pages/includes/productos/scroll infinito.html' %}#}
-        </article>
-
-
+        {# FILTAR PRODUCTOS REPONSIVE#}
+        {% include 'pages/includes/productos/FiltrarProductos.html' %}
+        {# MENU PRODUCTOS#}
+        {% include 'pages/includes/productos/MenuProductos.html' %}
+        {#      CAJA PRODUCTOS#}
+        {% include 'pages/includes/productos/todosLosProductosContenedor.html' %}
     </section>
-
 
     <section class="caja-productos__paginador">
         {% include 'pages/includes/paginador.html' %}
@@ -232,8 +65,22 @@
 {% endblock %}
 
 
-
 {% block ExtrasJS %}
+    <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+    <script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+    <script src="{% static 'js/infinite.min.js' %}"></script>
+    <script>
+        var infinite = new Waypoint.Infinite({
+            element: $('.infinite-container')[0],
+            offset: 'bottom-in-view',
+            onBeforePageLoad: function () {
+                {#$('.loading').show();#}
+            },
+            onAfterPageLoad: function ($items) {
+                {#$('.loading').hide();#}
+            }
+        });
+    </script>
     <script>
 
         function ordenar(v) {

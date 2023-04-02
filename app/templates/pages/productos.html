@@ -57,6 +57,7 @@
         {% include 'pages/includes/productos/MenuProductos.html' %}
         {#      CAJA PRODUCTOS#}
         {% include 'pages/includes/productos/todosLosProductosContenedor.html' %}
+{#        {% include 'pages/includes/productos/scroll infinito.html' %}#}
     </section>
 
     <section class="caja-productos__paginador">
@@ -66,23 +67,8 @@
 
 
 {% block ExtrasJS %}
-    <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
-    <script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
-    <script src="{% static 'js/infinite.min.js' %}"></script>
-    <script>
-        var infinite = new Waypoint.Infinite({
-            element: $('.infinite-container')[0],
-            offset: 'bottom-in-view',
-            onBeforePageLoad: function () {
-                {#$('.loading').show();#}
-            },
-            onAfterPageLoad: function ($items) {
-                {#$('.loading').hide();#}
-            }
-        });
-    </script>
-    <script>
 
+    <script>
         function ordenar(v) {
             alert(v);
             $.get(

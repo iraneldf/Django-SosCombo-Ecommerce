@@ -160,16 +160,16 @@ class venta(models.Model):
     cantidad = models.PositiveIntegerField(verbose_name='Cantidad de unidades del producto')
     precio_total = models.FloatField(verbose_name='Precio total')
     nombre = models.CharField(max_length=100, verbose_name='Nombre del cliente')
-    telefono = models.CharField(verbose_name='Phone', max_length=30)
     email = models.EmailField(verbose_name='Correo del cliente')
-    fecha = models.DateTimeField(verbose_name='Fecha')
     direccion = models.CharField(verbose_name='Direccion', max_length=200)
     ciudad = models.CharField(verbose_name='Cudad', max_length=100)
     pais = models.CharField(verbose_name='País', max_length=100)
+    telefono = models.CharField(verbose_name='Phone', max_length=30)
 
     class Meta:
         verbose_name_plural = 'Ventas'
         verbose_name = 'Venta'
 
     def __str__(self):
-        return f"{self.nombre} {self.fecha}"
+        return f"{self.nombre} | {self.email} | {self.producto} X {self.cantidad} | ${self.precio_total} " \
+               f"| {self.ciudad} | {self.pais} | {self.telefono} "

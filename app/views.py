@@ -20,12 +20,13 @@ from app.models import subscripciones
 from cart.cart import Cart
 
 
-def send_purchase_mail(nombre, email_usuario, fecha, telefono, direccion):
+def send_purchase_mail(nombre, email_usuario, telefono, direccion):
+    destinatarios = [models.contactenos.objects.first().email]
     send_mail(
-        'Nueva compra en ' + models.general.objects.first().titulo + '.',
-        'Nueva compra, datos de compra:\nNombre:\n' + nombre + ';\nCorreo:\n' + email_usuario + ';\nFecha: \n' + fecha + ';\nTeléfono:\n' + telefono + ';\nDirección:\n' + direccion + '.',
+        'Nueva compra en ' + models.general.objects.first().nombre + '.',
+        'Nueva compra, datos de compra:\nNombre: ' + nombre + ';\nCorreo: ' + email_usuario + ';\nTeléfono: ' + telefono + ';\nDirección: ' + direccion + '.',
         settings.EMAIL_HOST_USER,
-        [models.contactenos.objects.email, ],
+        destinatarios,
     )
 
 
@@ -370,7 +371,7 @@ def registar_venta(request: HttpRequest):
 
     newventa = models.venta(producto=product, precio=price, cantidad=quantity,
                             precio_total=total_price, nombre=name, email=email,
-                            fecha=timezone.now(), direccion=address, ciudad=city,
+                            direccion=address, ciudad=city,
                             pais=country, telefono=phone)
     newventa.save()
 
@@ -381,9 +382,8 @@ def registar_venta(request: HttpRequest):
 # nuevo correo de compra
 @method_decorator(csrf_exempt, require_POST)
 def new_purchase_mail(request: HttpRequest):
-    nombre = request.POST['nombre']
+    nombre = request.POST['name']
     email_remitente = request.POST['email']
-    fecha = str(timezone.now())
-    telefono = request.POST['telefono']
+    telefono = request.POST['phone']
     direccion = request.POST['address']
-    send_purchase_mail(nombre, email_remitente, fecha, telefono, direccion)
+    send_purchase_mail(nombre, email_remitente, telefono, direccion)

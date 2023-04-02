@@ -40,6 +40,7 @@
     {#######################}
 
     <script type="text/javascript" src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+
 </head>
 
 <body>
@@ -267,10 +268,10 @@
 
 </div>
 {###################LINKS JS#################################}
+{% block ExtrasJS %} {% endblock %}
 <script type="text/javascript" src="{% static 'js/modal.js' %}"></script>
 {#<script type="text/javascript" src="{% static 'js/datosProductos.js' %}"></script>#}
 <script type="text/javascript" src="{% static 'js/annadirCarrito.js' %}"></script>
-{% block ExtrasJS %} {% endblock %}
 <script type="text/javascript" src="{% static 'js/menu.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/filter-table.js' %}"></script>
 

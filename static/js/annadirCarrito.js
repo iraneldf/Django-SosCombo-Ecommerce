@@ -33,7 +33,6 @@ window.addEventListener('click', (e) => {
         contenedor.innerHTML = valor;
     }
     if(e.composedPath()[0].classList[0] == 'annadir-carrito' || e.composedPath()[0].classList == 'annadir-carro') {
-        let cant = parseFloat(contadorProductoContenedor.textContent) + 1;
         contadorProductoContenedor.textContent = cant;
         contadorProductoContenedor.classList.remove('ocultar');
 

@@ -116,7 +116,7 @@ class Index(generic.TemplateView):
 class Productos(ListView):
     template_name = 'pages/productos.html'
     queryset = models.productos.objects.filter(activ=True).order_by('precio')
-    paginate_by = 6
+    paginate_by = 12
     context_object_name = 'productos'
 
     def get_queryset(self):

@@ -31,7 +31,7 @@
                             onclick="addCarrito({{ object.id }},
                                     document.querySelector('#contador').textContent)">AÑADIR
                     </button>
-                    <button class="pagar-verProducto" id="botonPagar"><a class="pagar" href="./pago.html">PAGAR</a>
+                    <button class="pagar-verProducto" id="botonPagar"><a class="pagar" href="{% url 'pago' %}">PAGAR</a>
                     </button>
                 </div>
             </div>

@@ -155,7 +155,7 @@
                     {% else %}
                         <img class="carrito-stroke" src="{% static 'img/Iconos/carritoStroke.png' %}" alt=""/>
                     {% endif %}
-                    <p class="contar-productos-compra ocultar">0</p>
+                    <p class="contar-productos-compra {% if path == 'carrito' %}ocultar{% endif %}"></p>
                 </a>
             </div>
         </div>
@@ -177,16 +177,13 @@
     </header>
 </section>
 <script>
-    {#window.addEventListener("load", C())#}
-    {#function C() {#}
-    {#    #}
-    {#        var a=0;#}
-    {#        {% if request.session.cart.items %}#}
-    {#            {% for key,value in request.session.cart.items %}#}
-    {#                {{ value.id }}#}
-    {#                a++;#}
-    {#            {% endfor %}#}
-    {#            document.querySelector('.contar-productos-compra ').innerHTML = a;#}
-    {#        {% endif %}#}
+    window.addEventListener("load", C());
 
+    function C() {
+
+        var a = 0;
+        {% if request.session.cart.items %}
+            document.querySelector('.contar-productos-compra ').innerHTML = '!';
+        {% endif %}
+    }
 </script>

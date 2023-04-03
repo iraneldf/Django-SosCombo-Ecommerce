@@ -42,6 +42,10 @@
         <h3 style="position: absolute">No tenemos productos que coincidan con los filtros aplicados.</h3>
     {% endif %}
 
+    <article class="caja-productos__paginador_completo-otro">
+        {% include 'pages/includes/paginador.html' %}
+    </article>
+
 
     <script>
 
@@ -51,7 +55,8 @@
                     url: '{% url 'cartAjax'  %}',
                     type: 'POST',
                     data: {id: id, quantity: quantity},
-                    dataType: 'json'
+                    dataType: 'json',
+                    success: document.querySelector('.contar-productos-compra ').innerHTML = '!'
                 }
             )
         }

@@ -551,6 +551,17 @@
     margin-top: 10px;
 }
 
+.caja-productos__paginador_completo-otro {
+    justify-content: center;
+    display: inline;
+    background: var(--blancoEspecial);
+    border-top: none;
+    margin-top: 0;
+    grid-column: 1/span 2;
+
+
+}
+
 .btn-navegar__paginador {
     cursor: pointer;
     margin-top: 4px;
@@ -925,6 +936,20 @@
 }
 
 @media screen and (max-width: 900px) {
+
+    .caja-productos__paginador, .caja-productos__paginador_completo {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+    }
+
+    .caja-productos__paginador_completo-otro {
+        display: none;
+        grid-column: 2/span 2;
+
+
+    }
+
     .categorias-productos-escritorio {
         display: none;
     }
@@ -1037,13 +1062,6 @@
         align-items: center;
     }
 
-    .caja-productos__paginador, .caja-productos__paginador_completo {
-        display: flex;
-        flex-direction: row;
-        align-items: flex-start;
-    }
-
-
     .cuadro__inicio-sesion, .cuadro__registrar,
     .cuadro__restablecer-contrasenna {
         width: 99%;
@@ -1134,14 +1152,14 @@
     }
 }
 
-.boton-vaciar{
+.boton-vaciar {
     position: relative;
     left: 350px;
     bottom: 90px;
-    background-color:var(--blancoEspecial);
+    background-color: var(--blancoEspecial);
     width: 40px;
 }
 
-.boton-vaciar:hover{
+.boton-vaciar:hover {
     background-color: #e67e5c;
 }

@@ -45,7 +45,8 @@
                 url: '{% url 'cartAjax'  %}',
                 type: 'POST',
                 data: {id: id, quantity: quantity},
-                dataType: 'json'
+                dataType: 'json',
+                success: document.querySelector('.contar-productos-compra ').innerHTML = '!'
             }
         )
     }

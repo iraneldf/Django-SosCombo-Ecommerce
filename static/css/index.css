@@ -332,6 +332,8 @@
 
 /*Para PC*/
 @media screen and (min-width: 1000px) {
+
+
     .ofertas-especiales__productos-contenedor .producto {
         width: 21.5vw;
         height: 260px;
@@ -767,6 +769,9 @@
 
 
 @media screen and (min-width: 1000px) {
+    .btn-encabezado-flecha-fondo {
+        top: 50%;
+    }
     .producto {
         height: 260px;
         border-radius: 12px;
@@ -781,3 +786,8 @@
     }
 }
 
+@media screen and (max-width: 1000px) {
+    .btn-encabezado-flecha-fondo {
+        top: 70%;
+    }
+}

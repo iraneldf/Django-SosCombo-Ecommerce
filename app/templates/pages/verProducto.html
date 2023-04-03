@@ -25,17 +25,18 @@
                 ***********************************
             ******************************** -->
 
-                <p class="tiempo-entrega__producto">Tiempo de entrega: De 0 a 8 días</p>
+                <p class="tiempo-entrega__producto">Tiempo de entrega: {{ general.entrega }}</p>
                 <div class="annadir-carro__pagar">
                     <button class="annadir-carro" id="botonAnnadir" type="button"
                             onclick="addCarrito({{ object.id }},
                                     document.querySelector('#contador').textContent)">AÑADIR
                     </button>
-                    <button class="pagar-verProducto" id="botonPagar"><a class="pagar" href="./pago.html">PAGAR</a></button>
+                    <button class="pagar-verProducto" id="botonPagar"><a class="pagar" href="./pago.html">PAGAR</a>
+                    </button>
                 </div>
             </div>
         </article>
-    </section>  
+    </section>
 
     {###############################INICIE SU COMPRA########################}
     <section class="inicie-compra mejores-productos__contenedor">
@@ -64,31 +65,32 @@
                 }
             )
         }
-          {#OCULTAR Y MOSTRAR EL BOTON ANNADIR#}
-    window.addEventListener('click', (e) => {
-            if (e.composedPath()[0].classList[0] == 'btn-contar') {
-                const botonAnnadir = document.querySelector('#botonAnnadir');
-                const botonPagar = document.querySelector('#botonPagar');
-                const contenedor = document.querySelector('#contador');
 
-                botonAnnadir.classList.remove('ocultar');
+        {#OCULTAR Y MOSTRAR EL BOTON ANNADIR#}
+        window.addEventListener('click', (e) => {
+                if (e.composedPath()[0].classList[0] == 'btn-contar') {
+                    const botonAnnadir = document.querySelector('#botonAnnadir');
+                    const botonPagar = document.querySelector('#botonPagar');
+                    const contenedor = document.querySelector('#contador');
 
-                if (e.composedPath()[0].classList[1] == 'restar') {
-                    if (contenedor.textContent == 1 || contenedor.textContent == 0) {
-                        botonAnnadir.classList.add('ocultar')
-                        botonPagar.classList.add('ocultar')
+                    botonAnnadir.classList.remove('ocultar');
+
+                    if (e.composedPath()[0].classList[1] == 'restar') {
+                        if (contenedor.textContent == 1 || contenedor.textContent == 0) {
+                            botonAnnadir.classList.add('ocultar')
+                            botonPagar.classList.add('ocultar')
+                        }
+                    } else if (e.composedPath()[0].classList[1] == 'sumar') {
+                        if (contenedor.textContent != 0) {
+                            botonAnnadir.classList.remove('ocultar')
+                            botonPagar.classList.remove('ocultar')
+                        }
                     }
-                } else if (e.composedPath()[0].classList[1] == 'sumar') {
-                    if (contenedor.textContent != 0) {
-                        botonAnnadir.classList.remove('ocultar')
-                        botonPagar.classList.remove('ocultar')
-                    }
+
+
                 }
-
-
             }
-        }
-    )
-    ;
+        )
+        ;
     </script>
 {% endblock %}

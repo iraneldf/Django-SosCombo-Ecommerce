@@ -1,4 +1,3 @@
-
 from django.core.mail import send_mail
 from django.http import HttpRequest, JsonResponse
 from django.shortcuts import redirect
@@ -8,7 +7,6 @@ from django.views.generic.list import ListView
 # Create your views here.
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
-
 
 from django.contrib.auth import settings
 from django.utils import timezone
@@ -21,11 +19,19 @@ from app.models import subscripciones
 from cart.cart import Cart
 
 
-def send_purchase_mail(nombre, email_usuario, telefono, direccion):
+def send_purchase_mail(lista, nombre, nombre2, email_usuario, telefono, telefono2, direccion, total):
     destinatarios = [models.general.objects.first().email]
     send_mail(
-        'Nueva compra en ' + models.general.objects.first().nombre + '.',
-        'Nueva compra, datos de compra:\nNombre: ' + nombre + ';\nCorreo: ' + email_usuario + ';\nTeléfono: ' + telefono + ';\nDirección: ' + direccion + '.',
+        'Nueva compra en ' + models.general.objects.first().nombre + '.\n',
+        'Nueva compra, datos de compra:\nNombre de quien paga:  ' + nombre + ';\n' +
+        '\nNombre de quien recibe: ' + nombre2 + ';\n' +
+        '\nCorreo: ' + email_usuario + ';\n' +
+        '\nTeléfono de quien paga: ' + telefono + ';\n' +
+        '\nTeléfono de quien recibe: ' + telefono2 + ';\n' +
+        '\nDirección: ' + direccion + ';\n' +
+        '\nLista de Compra: ' + '\n' + lista + ';\n' +
+        '\nPrecio total: ' + total +
+        '.',
         settings.EMAIL_HOST_USER,
         destinatarios,
     )
@@ -118,7 +124,7 @@ class Index(generic.TemplateView):
 class Productos(ListView):
     template_name = 'pages/productos.html'
     queryset = models.productos.objects.filter(activ=True).order_by('precio')
-    paginate_by = 12
+    paginate_by = 9
     context_object_name = 'productos'
 
     def get_queryset(self):
@@ -258,21 +264,6 @@ class Pago(generic.TemplateView):
         return context
 
 
-#
-# class TusOrdenes(generic.TemplateView):
-#     template_name = 'pages/tusOrdenes.html'
-#
-#     def get_context_data(self, *, object_list=None, **kwargs):
-#         context = super(TusOrdenes, self).get_context_data()
-#
-#         context['conocenos'] = models.conocenos.objects.first()
-#         context['contactenos'] = models.contactenos.objects.first()
-#         context['general'] = models.general.objects.first()
-#
-#
-#         return context
-#
-
 # VIEWS DE CART
 # Adding an element
 @method_decorator(csrf_exempt, require_POST)
@@ -333,22 +324,6 @@ def add_quant(request: HttpRequest, id: int, quantity: int):
                          "amount": cart.session[CART_SESSION_ID].get(id, {"quantity": quantity})["quantity"]})
 
 
-# esto esta para eliminar error en post asincrono
-# @require_POST
-# def cart_detail(request: HttpRequest, id: int):
-#     return JsonResponse({"result": Cart(request).get_item(id)})
-
-
-# def buscar(request):
-#     template_name = 'index.html'
-#     buscarP = request.GET["buscar"]
-#     print("funciona")
-#     queryset = models.productos.objects.filter(activ=True, nombre__icontains=buscarP)
-#     context = {'queryset': queryset}
-#
-#     return render(request, template_name, context)
-
-
 # aumentando la cantidad de ventas de un producto
 @method_decorator(csrf_exempt, require_POST)
 def aumentar_ventas(request: HttpRequest, id: int, quantity: int):
@@ -362,21 +337,20 @@ def aumentar_ventas(request: HttpRequest, id: int, quantity: int):
 # añadiendo elementos a tabla venta
 @method_decorator(csrf_exempt, require_POST)
 def registar_venta(request: HttpRequest):
-    product = request.POST['product']
-    price = request.POST['price']
-    quantity = request.POST['quantity']
+    lista = request.POST['lista']
     total_price = request.POST['total_price']
     name = request.POST['name']
+    name2 = request.POST['name2']
     email = request.POST['email']
     phone = request.POST['phone']
-    country = request.POST['city']
-    city = request.POST['city']
+    phone2 = request.POST['phone2']
+    provincia = request.POST['country']
+    municipio = request.POST['city']
     address = request.POST['address']
 
-    newventa = models.venta(producto=product, precio=price, cantidad=quantity,
-                            precio_total=total_price, nombre=name, email=email,
-                            direccion=address, ciudad=city,
-                            pais=country, telefono=phone)
+    newventa = models.venta(lista=lista, precio_total=total_price, nombre=name, nombre2=name2, email=email,
+                            direccion=address, ciudad=municipio,
+                            pais=provincia, telefono=phone, telefono2=phone2)
     newventa.save()
 
     return JsonResponse({"result": "ok",
@@ -386,8 +360,12 @@ def registar_venta(request: HttpRequest):
 # nuevo correo de compra
 @method_decorator(csrf_exempt, require_POST)
 def new_purchase_mail(request: HttpRequest):
+    lista = request.POST['lista']
     nombre = request.POST['name']
+    nombre2 = request.POST['name2']
     email_remitente = request.POST['email']
     telefono = request.POST['phone']
+    telefono2 = request.POST['phone2']
     direccion = request.POST['address']
-    send_purchase_mail(nombre, email_remitente, telefono, direccion)
+    total = request.POST['total']
+    send_purchase_mail(lista, nombre, nombre2, email_remitente, telefono, telefono2, direccion, total)

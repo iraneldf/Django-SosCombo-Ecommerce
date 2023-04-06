@@ -51,7 +51,7 @@ class ubicaciones(models.Model):
 
 
 class subCategorias(models.Model):
-    categoria = models.ForeignKey(categorias, verbose_name='Categoría', on_delete=models.CASCADE, unique=True)
+    categoria = models.ForeignKey(categorias, verbose_name='Categoría', on_delete=models.CASCADE)
     subcategoria = models.CharField(max_length=100, verbose_name='Subcategoría', default='')
 
     class Meta:
@@ -99,19 +99,19 @@ class productos(models.Model):
 
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):
-        # if self.activ:
-        #     destinatarios = []
-        #     for dest in subscripciones.objects.all():
-        #         destinatarios.append(dest.email)
-        #
-        #     url = Site.objects.get_current().domain
-        #
-        #     send_mail(
-        #         "SosCombo",
-        #         "Hola! Tenemos nuevos productos visítanos en: " + url,
-        #         settings.EMAIL_HOST_USER,
-        #         destinatarios,
-        #     )
+        if self.activ:
+            destinatarios = []
+            for dest in subscripciones.objects.all():
+                destinatarios.append(dest.email)
+
+            url = Site.objects.get_current().domain
+
+            send_mail(
+                "SosCombo",
+                "Hola! Tenemos nuevos productos visítanos en: " + url,
+                settings.EMAIL_HOST_USER,
+                destinatarios,
+            )
 
         return super(productos, self).save()
 
@@ -157,21 +157,20 @@ class subscripciones(models.Model):
 
 class venta(models.Model):
     # campos
-    producto = models.CharField(max_length=100, verbose_name='Nombre del producto')
-    precio = models.FloatField(verbose_name='Precio')
-    cantidad = models.PositiveIntegerField(verbose_name='Cantidad de unidades del producto')
+    lista = models.TextField(verbose_name='Lista de compra', max_length=99999999)
     precio_total = models.FloatField(verbose_name='Precio total')
-    nombre = models.CharField(max_length=100, verbose_name='Nombre del cliente')
+    nombre = models.CharField(max_length=100, verbose_name='Nombre de quien paga')
+    nombre2 = models.CharField(max_length=100, verbose_name='Nombre de quien recibe')
     email = models.EmailField(verbose_name='Correo del cliente')
     direccion = models.CharField(verbose_name='Direccion', max_length=200)
-    ciudad = models.CharField(verbose_name='Cudad', max_length=100)
-    pais = models.CharField(verbose_name='País', max_length=100)
-    telefono = models.CharField(verbose_name='Phone', max_length=30)
+    pais = models.CharField(verbose_name='Provincia', max_length=100)
+    ciudad = models.CharField(verbose_name='Municipio', max_length=100)
+    telefono = models.CharField(verbose_name='Teléfono de quien paga', max_length=30)
+    telefono2 = models.CharField(verbose_name='Teléfono de quien recibe', max_length=30)
 
     class Meta:
         verbose_name_plural = 'Ventas'
         verbose_name = 'Venta'
 
     def __str__(self):
-        return f"{self.nombre} | {self.email} | {self.producto} X {self.cantidad} | ${self.precio_total} " \
-               f"| {self.ciudad} | {self.pais} | {self.telefono} "
+        return f" ${self.precio_total} | {self.email}   "

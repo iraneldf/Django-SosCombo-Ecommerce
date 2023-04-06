@@ -15,3 +15,4 @@ admin.site.register(models.categorias)
 admin.site.register(models.subCategorias)
 admin.site.register(models.ubicaciones)
 admin.site.register(models.venta)
+

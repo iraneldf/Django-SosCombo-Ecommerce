@@ -6,38 +6,14 @@
     <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 {% block content %}
-   {% include 'pages/includes/pago/formularioClasico.html' %}
+    {% include 'pages/includes/pago/formularioClasico.html' %}
 {% endblock %}
 
 {% block ExtrasJS %}
 
-    {#    <script src="{% static 'js/pago.js' %}"></script>#}
     <script src="{% static 'js/bootstrap.js' %}"></script>
     <script>
 
-        function ajaxFunction(url, parameters, type, callback, async = true) {
-            $.ajax({
-                url: url,
-                type: type,
-                data: parameters,
-                dataType: 'json',
-                processData: false,
-                contentType: false,
-                async: async
-            })
-                .done(function (data) {
-                    // callback(data)
-                    if (!data.hasOwnProperty('error')) {
-                        callback(data)
-                        return false
-                    }
-                })
-                .fail(function (jqXHR, textStatus, errorThrown) {
-                    alert(textStatus + ': ' + errorThrown)
-                })
-                .always(function (data) {
-                })
-        }
 
         window.addEventListener('load', multiply)
         window.addEventListener('load', total_sum)

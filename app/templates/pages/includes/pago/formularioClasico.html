@@ -1,23 +1,29 @@
 <section class="pago-contenedor pagina-secundaria__contenedor">
-    <h2>DETALLES DEL ENVÍO</h2>
+    <h3>DETALLES DEL ENVÍO</h3>
 
-    <form action="{% url 'pago' %}" class="form-pago">
-        <label for="first-name-input"><p>Nombre y Apellidos</p></label>
+    <form action="#" class="form-pago">
+        <label for="first-name-input"><p>Nombre y Apellidos de quien paga</p></label>
         <input id="first-name-input" class="input-simple" type="text" required>
         <p id="error1" style="color:red;" class="d-none error">Debe completar el nombre</p>
+        <label for="first-name-input2"><p>Nombre y Apellidos de quien recibe</p></label>
+        <input id="first-name-input2" class="input-simple" type="text" required>
+        <p id="error11" style="color:red;" class="d-none error">Debe completar el nombre</p>
         <label for="email-input"><p>Correo electrónico</p></label>
         <input id="email-input" class="input-simple" type="email" required>
         <p id="error2" style="color:red;" class="d-none error">Correo no válido</p>
-        <label for="phone-input"><p>Teléfono</p></label>
+        <label for="phone-input"><p>Teléfono de quien paga</p></label>
         <input id="phone-input" class="input-simple" type="tel" required>
         <p id="error3" style="color:red;" class="d-none error">Debe completar el teléfono</p>
-        <label for="country-input"><p>País</p></label>
+        <label for="phone-input2"><p>Teléfono de quien recibe</p></label>
+        <input id="phone-input2" class="input-simple" type="tel" required>
+        <p id="error31" style="color:red;" class="d-none error">Debe completar el teléfono</p>
+        <label for="country-input"><p>Provincia</p></label>
         <input id="country-input" class="input-simple" type="text" required>
-        <p id="error4" style="color:red;" class="d-none error">Debe especificar el país</p>
-        <label for="city-input"><p>Ciudad</p></label>
+        <p id="error4" style="color:red;" class="d-none error">Debe especificar la provincia</p>
+        <label for="city-input"><p>Municipio</p></label>
         <input id="city-input" class="input-simple" type="text" required>
-        <p id="error5" style="color:red;" class="d-none error">Debe especificar la cuidad</p>
-        <label for="address-input"><p>Dirección</p></label>
+        <p id="error5" style="color:red;" class="d-none error">Debe especificar el municipio</p>
+        <label for="address-input"><p>Dirección de quien recibe</p></label>
         <input id="address-input" class="input-simple" type="text" required>
         <p id="error6" style="color:red;" class="d-none error">Debe especificar la dirección</p>
 
@@ -46,7 +52,7 @@
                 <button class="nav-link active" id="home-tab" data-bs-toggle="tab"
                         data-bs-target="#home-tab-pane"
                         type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Pagar al
-                    envio
+                    recibir
                 </button>
             </li>
             <li class="nav-item" role="presentation">
@@ -68,18 +74,50 @@
             </div>
         </div>
     </form>
-
     <script
             src="https://www.paypal.com/sdk/js?client-id={{ general.id_paypal|safe }}&locale=es_ES&currency=USD"></script>
+
     <script>
         let nombre = document.getElementById('first-name-input')
+        let nombre2 = document.getElementById('first-name-input2')
         let email = document.getElementById('email-input')
         let phone = document.getElementById('phone-input')
+        let phone2 = document.getElementById('phone-input2')
         let country = document.getElementById('country-input')
         let city = document.getElementById('city-input')
         let address = document.getElementById('address-input')
         let aceptar = document.getElementById('aceptar')
         let emailvalid = /^[^@]+@[^@]+/;
+        let lista = '';
+        {% for key,value in request.session.cart.items %}
+            lista += '{% if not forloop.first %}\n {% endif %} .{{value.product.nombre}} '
+            + 'X{{ value.quantity|safe}} ' +'$'
+            + {{value.product.precio|safe  }}*{{ value.quantity|safe}}
+        {% endfor %}
+
+        function ajaxFunction(url, parameters, type, callback, async = true) {
+            $.ajax({
+                url: url,
+                type: type,
+                data: parameters,
+                dataType: 'json',
+                processData: false,
+                contentType: false,
+                async: async
+            })
+                .done(function (data) {
+                    // callback(data)
+                    if (!data.hasOwnProperty('error')) {
+                        callback(data)
+                        return false
+                    }
+                })
+                .fail(function (jqXHR, textStatus, errorThrown) {
+                    alert(textStatus + ': ' + errorThrown)
+                })
+                .always(function (data) {
+                })
+        }
 
         function validar() {
 
@@ -87,6 +125,12 @@
                 $('.error').addClass('d-none')
                 document.querySelector('#error1').classList.remove('d-none');
                 nombre.focus()
+
+            } else if (nombre2.value.length < 1) {
+                $('.error').addClass('d-none')
+                document.querySelector('#error11').classList.remove('d-none');
+                nombre2.focus()
+
             } else if (!emailvalid.test(email.value)) {
                 $('.error').addClass('d-none')
                 document.querySelector('#error2').classList.remove('d-none');
@@ -96,6 +140,11 @@
                 $('.error').addClass('d-none')
                 document.querySelector('#error3').classList.remove('d-none');
                 phone.focus()
+
+            } else if (phone2.value.length < 1) {
+                $('.error').addClass('d-none')
+                document.querySelector('#error31').classList.remove('d-none');
+                phone2.focus()
             } else if (country.value.length < 1) {
                 $('.error').addClass('d-none')
                 document.querySelector('#error4').classList.remove('d-none');
@@ -120,52 +169,55 @@
         function enviarform() {
 
             if (validar()) {
+                {#####################AUMENTAR CANTIDAD VENDIDOS############################}
                 {% for key,value in request.session.cart.items %}
-                    {#####################AUMENTAR CANTIDAD VENDIDOS############################}
                     ajaxFunction('{% url 'aumentar_venta' value.product.id value.quantity %}', {
                         'id': '{{value.product.id}}',
                         'quantity': '{{ value.quantity }}'
                     }, 'POST', response => {
                         console.log(response)
                     })
-                    {#####################REGISTRAR LA VENTA############################}
-                    $.ajax(
-                        {
-                            url: '{% url 'registar_venta' %}',
-                            type: 'POST',
-                            data: {
-                                product: '{{value.product.nombre}}',
-                                price: {{ value.product.precio|safe  }},
-                                quantity: {{ value.quantity|safe }},
-                                total_price:
-                                {{ value.product.precio|safe }}*{{ value.quantity|safe }}+{{ general.precio|safe }},
-                                name: document.getElementById('first-name-input').value,
-                                email: document.getElementById('email-input').value,
-                                phone: document.getElementById('phone-input').value,
-                                country: document.getElementById('country-input').value,
-                                city: document.getElementById('city-input').value,
-                                address: document.getElementById('address-input').value,
-                            },
-                            dataType: 'json'
-                        })
                 {% endfor %}
+                {#####################REGISTRAR LA VENTA############################}
+                $.ajax(
+                    {
+                        url: '{% url 'registar_venta' %}',
+                        type: 'POST',
+                        data: {
+                            lista: lista,
+                            total_price: total_sum(),
+                            name: document.getElementById('first-name-input').value,
+                            name2: document.getElementById('first-name-input2').value,
+                            email: document.getElementById('email-input').value,
+                            phone: document.getElementById('phone-input').value,
+                            phone2: document.getElementById('phone-input2').value,
+                            country: document.getElementById('country-input').value,
+                            city: document.getElementById('city-input').value,
+                            address: document.getElementById('address-input').value,
+                        },
+                        dataType: 'json',
+
+                    })
                 {#####################MANDAR EMAIL############################}
                 $.ajax(
                     {
                         url: '{% url 'venta_mail' %}',
                         type: 'POST',
                         data: {
+                            lista: lista,
                             name: document.getElementById('first-name-input').value,
+                            name2: document.getElementById('first-name-input2').value,
                             email: document.getElementById('email-input').value,
                             phone: document.getElementById('phone-input').value,
+                            phone2: document.getElementById('phone-input2').value,
                             address: document.getElementById('address-input').value,
+                            total: total_sum(),
                         },
                         dataType: 'json'
                     })
-            location.reload();
+                location.reload()
             }
         }
-
 
         paypal.Buttons({
             // onInit is called when the button first renders
@@ -176,9 +228,13 @@
 
                 nombre
                     .addEventListener('keyup', valid);
+                nombre2
+                    .addEventListener('keyup', valid);
                 email
                     .addEventListener('keyup', valid);
                 phone
+                    .addEventListener('keyup', valid);
+                phone2
                     .addEventListener('keyup', valid);
                 city
                     .addEventListener('keyup', valid);
@@ -190,10 +246,12 @@
                 aceptar
                     .addEventListener('change', valid);
 
-                function valid(event) {
+                function valid() {
                     let flag = nombre.value.length > 1 &&
+                        nombre2.value.length > 1 &&
                         emailvalid.test(email.value) &&
                         phone.value.length > 1 &&
+                        phone2.value.length > 1 &&
                         city.value.length > 1 &&
                         country.value.length > 1 &&
                         address.value.length > 1 &&
@@ -217,6 +275,12 @@
                     $('.error').addClass('d-none')
                     document.querySelector('#error1').classList.remove('d-none');
                     nombre.focus()
+
+                } else if (nombre2.value.length < 1) {
+                    $('.error').addClass('d-none')
+                    document.querySelector('#error11').classList.remove('d-none');
+                    nombre2.focus()
+
                 } else if (!emailvalid.test(email.value)) {
                     $('.error').addClass('d-none')
                     document.querySelector('#error2').classList.remove('d-none');
@@ -226,18 +290,26 @@
                     $('.error').addClass('d-none')
                     document.querySelector('#error3').classList.remove('d-none');
                     phone.focus()
+                } else if (phone2.value.length < 1) {
+                    $('.error').addClass('d-none')
+                    document.querySelector('#error31').classList.remove('d-none');
+                    phone2.focus()
+
                 } else if (country.value.length < 1) {
                     $('.error').addClass('d-none')
                     document.querySelector('#error4').classList.remove('d-none');
                     country.focus()
+
                 } else if (city.value.length < 1) {
                     $('.error').addClass('d-none')
                     document.querySelector('#error5').classList.remove('d-none');
                     city.focus()
+
                 } else if (address.value.length < 1) {
                     $('.error').addClass('d-none')
                     document.querySelector('#error6').classList.remove('d-none');
                     address.focus()
+
                 } else if (!aceptar.checked) {
                     $('.error').addClass('d-none')
                     document.querySelector('#error7').classList.remove('d-none');
@@ -268,50 +340,53 @@
             onApprove: function (data, actions) {
                 // This function captures the funds from the transaction.
                 return actions.order.capture().then(function (details) {
+                    {#####################AUMENTAR CANTIDAD VENDIDOS############################}
                     {% for key,value in request.session.cart.items %}
-                        {#####################AUMENTAR CANTIDAD VENDIDOS############################}
-                        {% comment %}  ajaxFunction('{% url 'aumentar_venta' value.product.id value.quantity %}', {
-                              'id': '{{value.product.id}}',
-                              'quantity': '{{ value.quantity }}'
-                          }, 'POST', response => {
-                              console.log(response)
-                          }){% endcomment %}
-                        {#####################REGISTRAR LA VENTA############################}
-                        $.ajax(
-                            {
-                                url: '{% url 'registar_venta' %}',
-                                type: 'POST',
-                                data: {
-                                    product: '{{value.product.nombre}}',
-                                    price: {{ value.product.precio|safe  }},
-                                    quantity: {{ value.quantity|safe }},
-                                    total_price:
-                                    {{ value.product.precio|safe }}*{{ value.quantity|safe }}+{{ general.precio|safe }},
-                                    name: document.getElementById('first-name-input').value,
-                                    email: document.getElementById('email-input').value,
-                                    phone: document.getElementById('phone-input').value,
-                                    country: document.getElementById('country-input').value,
-                                    city: document.getElementById('city-input').value,
-                                    address: document.getElementById('address-input').value,
-                                },
-                                dataType: 'json'
-                            })
+                        ajaxFunction('{% url 'aumentar_venta' value.product.id value.quantity %}', {
+                            'id': '{{value.product.id}}',
+                            'quantity': '{{ value.quantity }}'
+                        }, 'POST', response => {
+                            console.log(response)
+                        })
                     {% endfor %}
+                    {#####################REGISTRAR LA VENTA############################}
+                    $.ajax(
+                        {
+                            url: '{% url 'registar_venta' %}',
+                            type: 'POST',
+                            data: {
+                                lista: lista,
+                                total_price: total_sum(),
+                                name: document.getElementById('first-name-input').value,
+                                name2: document.getElementById('first-name-input2').value,
+                                email: document.getElementById('email-input').value,
+                                phone: document.getElementById('phone-input').value,
+                                phone2: document.getElementById('phone-input2').value,
+                                country: document.getElementById('country-input').value,
+                                city: document.getElementById('city-input').value,
+                                address: document.getElementById('address-input').value,
+                            },
+                            dataType: 'json',
+
+                        })
                     {#####################MANDAR EMAIL############################}
                     $.ajax(
                         {
                             url: '{% url 'venta_mail' %}',
                             type: 'POST',
                             data: {
+                                lista: lista,
                                 name: document.getElementById('first-name-input').value,
+                                name2: document.getElementById('first-name-input2').value,
                                 email: document.getElementById('email-input').value,
                                 phone: document.getElementById('phone-input').value,
+                                phone2: document.getElementById('phone-input2').value,
                                 address: document.getElementById('address-input').value,
+                                total: total_sum(),
                             },
                             dataType: 'json'
                         })
-                    location.reload();
-
+                location.reload();
                 });
 
             }

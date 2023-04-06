@@ -14,7 +14,6 @@ urlpatterns = [
     path('carrito', Carrito.as_view(), name='carrito'),
     path('subscribe', Subscribe, name='subscribe'),
     path('pago', Pago.as_view(), name='pago'),
-    path('tusOrdenes', TusOrdenes.as_view(), name='tusOrdenes'),
 
     # custom
     path("sales/add/<id>/<quantity>", aumentar_ventas, name="aumentar_venta"),

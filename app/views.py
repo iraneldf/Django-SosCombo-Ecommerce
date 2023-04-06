@@ -1,18 +1,19 @@
-from datetime import timezone
-from urllib import request
 
-from _queue import Empty
 from django.core.mail import send_mail
 from django.http import HttpRequest, JsonResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from django.utils.decorators import method_decorator
 from django.views import generic
 from django.views.generic.list import ListView
 # Create your views here.
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
-from select import error
 
+
+from django.contrib.auth import settings
+from django.utils import timezone
+from datetime import *
+from django.db import models
 from SosCombos_Django import settings
 from SosCombos_Django.settings import CART_SESSION_ID
 from app import models
@@ -21,7 +22,7 @@ from cart.cart import Cart
 
 
 def send_purchase_mail(nombre, email_usuario, telefono, direccion):
-    destinatarios = [models.contactenos.objects.first().email]
+    destinatarios = [models.general.objects.first().email]
     send_mail(
         'Nueva compra en ' + models.general.objects.first().nombre + '.',
         'Nueva compra, datos de compra:\nNombre: ' + nombre + ';\nCorreo: ' + email_usuario + ';\nTeléfono: ' + telefono + ';\nDirección: ' + direccion + '.',
@@ -109,6 +110,7 @@ class Index(generic.TemplateView):
         context['conocenos'] = models.conocenos.objects.first()
         context['contactenos'] = models.contactenos.objects.first()
         context['carrusel'] = models.carrusel.objects.all()
+        context['fecha'] = datetime.now()
 
         return context
 
@@ -256,18 +258,20 @@ class Pago(generic.TemplateView):
         return context
 
 
-class TusOrdenes(generic.TemplateView):
-    template_name = 'pages/tusOrdenes.html'
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super(TusOrdenes, self).get_context_data()
-
-        context['conocenos'] = models.conocenos.objects.first()
-        context['contactenos'] = models.contactenos.objects.first()
-        context['general'] = models.general.objects.first()
-
-        return context
-
+#
+# class TusOrdenes(generic.TemplateView):
+#     template_name = 'pages/tusOrdenes.html'
+#
+#     def get_context_data(self, *, object_list=None, **kwargs):
+#         context = super(TusOrdenes, self).get_context_data()
+#
+#         context['conocenos'] = models.conocenos.objects.first()
+#         context['contactenos'] = models.contactenos.objects.first()
+#         context['general'] = models.general.objects.first()
+#
+#
+#         return context
+#
 
 # VIEWS DE CART
 # Adding an element

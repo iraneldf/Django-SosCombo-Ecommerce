@@ -16,12 +16,9 @@
     {% endblock %}
     <!-- CSS -->
 
-
     {% block css %}
 
     {% endblock %}
-    <link href="{% static 'plugins/font-awesome-4.7.0/css/font-awesome.min.css' %}" rel="stylesheet"
-          type="text/css">
 
     <link href="{% static 'css/anim.css' %}" rel="stylesheet" type="text/css">
 
@@ -88,7 +85,7 @@
         <div class="pie-pagina__logo-web-dinamico">
             <a href="{% url 'index' %}">
                 <div id="logo-pie">
-                    <img class="imagen-logo-pie" src="{{ general.logo.url }}">
+                    <img alt="logo" class="imagen-logo-pie" src="{{ general.logo.url }}">
                     <text class="texto-logo-pie">{{ general.nombre }}</text>
                 </div>
             </a>
@@ -99,16 +96,16 @@
         <h2>CONÓCENOS</h2>
         <ul>
             <li>
-                <a style="color: black;" href="{% url 'sobreNosotros' %}">{{ conocenos.sobreNosotros }}</a>
+                <a href="{% url 'sobreNosotros' %}">{{ conocenos.sobreNosotros }}</a>
             </li>
             <li>
-                <a style="color: black;" href="{% url 'condicionesUso' %}">{{ conocenos.condiciones }}</a>
+                <a href="{% url 'condicionesUso' %}">{{ conocenos.condiciones }}</a>
             </li>
             <li>
-                <a style="color: black;" href="{% url 'enviosDevoluciones' %}">{{ conocenos.envio }}</a>
+                <a href="{% url 'enviosDevoluciones' %}">{{ conocenos.envio }}</a>
             </li>
             <li>
-                <a style="color: black;" href="{% url 'politicaPrivacidad' %}">{{ conocenos.politica }}</a>
+                <a href="{% url 'politicaPrivacidad' %}">{{ conocenos.politica }}</a>
             </li>
         </ul>
     </div>
@@ -146,36 +143,6 @@
     <p class="pie-pagina__final">© 2022 {{ general.nombre }}. Developed by GoDjango</p>
 </footer>
 
-{##############PLANTILLA OCULTA#############################}
-{#<!--Los Productos están en JS-->#}
-{#<div class="plantilla plantilla-oculta">#}
-{#    <div class="plantilla-producto">#}
-{#        <div class="producto">#}
-{#            <a class="mostrar-producto" href="./pages/verProducto.html">#}
-{#                <img class="foto-producto" alt="foto producto" src="">#}
-{#            </a>#}
-{#            <div class="nombre-precio-producto ">#}
-{#                <h4></h4>#}
-{#                <p></p>#}
-{#            </div>#}
-{#            <div class="contar-producto">#}
-{#                <button class="btn-contar restar" type="button">&minus;</button>#}
-{#                <div id="contador">0</div>#}
-{#                <button class="btn-contar sumar" type="button">&plus;</button>#}
-{#            </div>#}
-{##}
-{#            <button#}
-{#                    type="button"#}
-{#                    class="annadir-carrito btnSimple-carrito__comprar-mas"#}
-{#            >#}
-{#                AÑADIR#}
-{#            </button>#}
-{#            <button#}
-{#                    onclick="document.querySelector('.annadir-carrito carrito__comprar-mas').classList.add('animate')"#}
-{#                    class="annadir-carrito carrito__comprar-mas" type="button"></button>#}
-{#        </div>#}
-{#    </div>#}
-{#</div>#}
 {% block footer %}
 
 {% endblock %}
@@ -185,7 +152,7 @@
         <div class="modal-ubicacion-contenedor">
             <p>Seleccione la dirección del envío</p>
 
-            <img src="{% static 'img/Iconos/ubicacion.svg' %}">
+            <img alt="imagen de ubicación" src="{% static 'img/Iconos/ubicacion.svg' %}">
 
             <div class="input-form-ubicacion">
                 <p>Localización</p>

@@ -19,25 +19,8 @@ const categorias = document.querySelectorAll('.categoria')
 const subcategorias = document.querySelectorAll('.subcategoria')
 const btnMenuCat = document.querySelectorAll('.btn-filtrar');
 
-console.log(categorias.forEach((categoria,key)=>categoria.addEventListener("click", ()=>{
-    btnMenuCat[key].classList.toggle('invertir');
-    subcategorias[key].classList.toggle("subcategoria-oculta")
-})))
 
-/* btnMenuComidasBebidas.addEventListener('click', () => {
-    subMenuComidasBebidas.classList.toggle('comidas-bebidas-oculto');
-    btnMenuComidasBebidas.classList.toggle('invertir');
-}); */
-/* btnMenuAseo.addEventListener('click', () => {
-    subMenuAseo.classList.toggle('aseo-oculto');
-    btnMenuAseo.classList.toggle('invertir');
-}); */
-
-
-
-
-
-btnBuscar.addEventListener('click', () =>{
+btnBuscar.addEventListener('click', () => {
     document.querySelector('.barra-buscar').focus();
 });
 
@@ -48,14 +31,13 @@ btnAbrirMenu.addEventListener('click', () => {
 
 btnCerrarMenu.addEventListener('click', () => {
     menu.classList.toggle('activo');
-    
+
 });
 
 btnMenuFiltrar.addEventListener('click', () => {
     menuFiltrar.classList.toggle('filtrar-activo');
     btnMenuFiltrar.classList.toggle('invertir')
 });
-
 
 
 btnMenuFiltrarCategoria1.addEventListener('click', () => {
@@ -72,12 +54,9 @@ btnMenuFiltrarCategoria2.addEventListener('click', () => {
 });
 
 
-
-
 if (window.screen.width < 700) {
     document.getElementById('barra-escritorio').style.display = 'none';
-}
-else document.getElementById('barra-responsive').style.display = 'none';
+} else document.getElementById('barra-responsive').style.display = 'none';
 
 
 

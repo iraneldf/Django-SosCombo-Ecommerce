@@ -1,6 +1,13 @@
 {% extends 'pages/includes/base.html' %}
 {% load static %}
 
+{% block css %}
+    <style>
+        .pedidos-domicilio {
+            background-image: url('{{ domicilio.imagen.url }}');
+        }
+    </style>
+{% endblock %}
 {% block content %}
 
     {###########################Carrusel ##############################}
@@ -9,6 +16,7 @@
     <section class="mejores-productos__contenedor p-10 p-60-vertical">
         <h2 class="mejoresProductosTexto">LOS <span style="font-weight: 900">MEJORES  PRODUCTOS</span> A SU DISPOSICIÓN
         </h2>
+        {{ fecha }}
 
         <div class="visitar-productos">
             <a href="{% url 'productos' %}">Ver todos</a>
@@ -27,7 +35,7 @@
     </section>
 
     {######################PEDIDOS A DOMICILIO##############################################}
-    <section class="pedidos-domicilio" style="background-image: url('{{ domicilio.imagen.url }}');">
+    <section class="pedidos-domicilio">
         <div class="pedidos-domicilio__texto">
             <h2>{{ domicilio.encabezado }}</h2>
             <p>{{ domicilio.texto }}</p>

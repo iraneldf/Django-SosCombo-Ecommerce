@@ -294,7 +294,6 @@
     align-items: center;
     border-radius: 3px;
     box-shadow: 1px 1px 6px 0 #615d5d;
-    display: flex;
     justify-content: center;
     width: 47%;
     height: 30px;
@@ -307,7 +306,7 @@
 .annadir-carro svg {
     margin-top: 5px;
     padding: 0;
-    margin: 0;
+    /*margin: 0;*/
 }
 
 .annadir-carro p {
@@ -352,7 +351,7 @@
 /*verProd*/
 .iniciar-compra__ver-producto .producto {
     background: #fff;
-    box-shadow: 0px 5px 5px 0px #c5c3c2;
+    box-shadow: 0 5px 5px 0 #c5c3c2;
     height: 260px;
 }
 
@@ -518,7 +517,7 @@
     border-top: 2px solid #d0c2c2;
     width: 75%;
     gap: 30px 0;
-    padding: 50px 15.6vw 50px 0px;
+    padding: 50px 15.6vw 50px 0;
     overflow-y: auto;
 }
 
@@ -650,7 +649,7 @@
 .pago-contenedor > h2,
 .form-pago {
     width: 50%;
-    padding: 0 0%;
+    padding: 0 0;
     align-self: center;
 }
 
@@ -663,7 +662,7 @@
     border: 1px solid #000;
     padding: 3px 0 3px 6px;
     width: 100%;
-    height: 20px;
+    height: 25px;
     border-radius: 5px;
     margin-bottom: 20px;
     background: var(--blancoEspecial);
@@ -788,8 +787,8 @@
     width: 29%;
     background: #fff;
     border-radius: 10px;
-    box-shadow: 3px 5px 4px 0px #bfbab8;
-    padding: 0px 0 0 10px;
+    box-shadow: 3px 5px 4px 0 #bfbab8;
+    padding: 0 0 0 10px;
     display: flex;
     justify-content: space-between;
     margin-bottom: 50px;
@@ -816,7 +815,7 @@
     justify-content: flex-end;
     cursor: pointer;
     position: relative;
-    top: 0px;
+    top: 0;
     right: 8px;
 }
 
@@ -905,7 +904,7 @@
 @media screen and (min-width: 1100px) {
     .form-pago {
         width: 30%;
-        padding: 0 0%;
+        padding: 0 0;
     }
 
     .pago-contenedor > h2, .form-pago {
@@ -965,9 +964,9 @@
         width: 100%;
         display: flex;
         justify-content: space-evenly;
-        padding: 15px 0px;
+        padding: 15px 0;
         flex-wrap: wrap;
-        gap: 25px 0px;
+        gap: 25px 0;
     }
 
     .filtro-menu {
@@ -987,7 +986,7 @@
 @media screen and (max-width: 700px) {
     .form-pago {
         width: 50%;
-        padding: 0 0%;
+        padding: 0 0;
     }
 
     .iniciar-compra__ver-producto {
@@ -1106,9 +1105,9 @@
         width: 100%;
         display: flex;
         justify-content: space-evenly;
-        padding: 15px 0px;
+        padding: 15px 0;
         flex-wrap: wrap;
-        gap: 25px 0px;
+        gap: 25px 0;
     }
 }
 
@@ -1142,7 +1141,7 @@
 
 @media screen and (max-width: 400px) {
     .iniciar-compra__ver-producto {
-        gap: 25px 0px;
+        gap: 25px 0;
     }
 }
 
@@ -1153,9 +1152,8 @@
 }
 
 .boton-vaciar {
-    position: relative;
-    left: 350px;
-    bottom: 90px;
+    margin-right: 50%;
+    margin-top: 50px;
     background-color: var(--blancoEspecial);
     width: 40px;
 }

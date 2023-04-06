@@ -3,116 +3,16 @@
 {% block css %}
     <link href="{% static 'css/paginasSecundarias.css' %}" rel="stylesheet" type="text/css">
     <link href="{% static 'css/modalTusOrdenes.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 {% block content %}
-    <section class="pago-contenedor pagina-secundaria__contenedor">
-        <h2>DETALLES DEL ENVÍO</h2>
-
-        <form action="#" class="form-pago">
-            <p>Nombre y Apellidos</p>
-            <input id="first-name-input" class="input-simple" type="text" required>
-            <p>Correo electrónico</p>
-            <input id="email-input" class="input-simple" type="email" required>
-            <p>Teléfono</p>
-            <input id="phone-input" class="input-simple" type="tel" required>
-            <p>País</p>
-            <input id="country-input" class="input-simple" type="text" required>
-            <p>Ciudad</p>
-            <input id="city-input" class="input-simple" type="text" required>
-            <p>Dirección</p>
-            <input id="address-input" class="input-simple" type="text" required>
-
-            {#REUSUMEN DEL PEDIDO#}
-            {% include 'pages/includes/pago/Resumen del pedido.html' %}
-            {#SELECCIONE FORMA DE PAGO#}
-            {#            {% include 'pages/includes/pago/Seleccione forma de pago.html' %}#}
-
-            <div class="condiciones-uso">
-                <input type="checkbox" required><label>Acepto los términos y condiciones de uso.</label>
-            </div>
-
-
-            <input type="submit" value="PAGAR" class="btnPagar-submit">
-
-            <!-- botones de paypal -->
-            <div id="paypal-button-container"></div>
-
-
-        </form>
-        <script
-                src="https://www.paypal.com/sdk/js?client-id={{ general.id_paypal|safe }}&locale=es_ES&currency=USD"></script>
-        <script>
-            paypal.Buttons({
-                createOrder: function (data, actions) {
-                    return actions.order.create({
-                        purchase_units: [{
-                            amount: {
-                                value: total_sum(),
-                            },
-                        }]
-
-                    });
-                }, onCancel: function (data) {
-                    console.log(data);
-                }, onApprove: function (data, actions) {
-                    // This function captures the funds from the transaction.
-                    return actions.order.capture().then(function (details) {
-                        {% for key,value in request.session.cart.items %}
-                            {#####################AUMENTAR CANTIDAD VENDIDOS############################}
-                          {% comment %}  ajaxFunction('{% url 'aumentar_venta' value.product.id value.quantity %}', {
-                                'id': '{{value.product.id}}',
-                                'quantity': '{{ value.quantity }}'
-                            }, 'POST', response => {
-                                console.log(response)
-                            }){% endcomment %}
-                            {#####################REGISTRAR LA VENTA############################}
-                            $.ajax(
-                                {
-                                    url: '{% url 'registar_venta' %}',
-                                    type: 'POST',
-                                    data: {
-                                        product: '{{value.product.nombre}}',
-                                        price: {{ value.product.precio|safe  }},
-                                        quantity: {{ value.quantity|safe }},
-                                        total_price:
-                                        {{ value.product.precio|safe }}*{{ value.quantity|safe }}+{{ general.precio|safe }},
-                                        name: document.getElementById('first-name-input').value,
-                                        email: document.getElementById('email-input').value,
-                                        phone: document.getElementById('phone-input').value,
-                                        country: document.getElementById('country-input').value,
-                                        city: document.getElementById('city-input').value,
-                                        address: document.getElementById('address-input').value,
-                                    },
-                                    dataType: 'json'
-                                })
-                        {% endfor %}
-                        {#####################MANDAR EMAIL############################}
-                        $.ajax(
-                            {
-                                url: '{% url 'venta_mail' %}',
-                                type: 'POST',
-                                data: {
-                                    name: document.getElementById('first-name-input').value,
-                                    email: document.getElementById('email-input').value,
-                                    phone: document.getElementById('phone-input').value,
-                                    address: document.getElementById('address-input').value,
-                                },
-                                dataType: 'json'
-                            })
-
-                    });
-                }
-            }).render('#paypal-button-container');
-
-        </script>
-
-    </section>
-
+   {% include 'pages/includes/pago/formularioClasico.html' %}
 {% endblock %}
 
 {% block ExtrasJS %}
 
     {#    <script src="{% static 'js/pago.js' %}"></script>#}
+    <script src="{% static 'js/bootstrap.js' %}"></script>
     <script>
 
         function ajaxFunction(url, parameters, type, callback, async = true) {

@@ -31,8 +31,11 @@
                             onclick="addCarrito({{ object.id }},
                                     document.querySelector('#contador').textContent)">AÑADIR
                     </button>
-                    <button class="pagar-verProducto" id="botonPagar"><a class="pagar" href="{% url 'pago' %}">PAGAR</a>
+
+                    <button class="pagar-verProducto   {% if not request.session.cart.items %} ocultar {% endif %}"
+                            id="botonPagar"><a class="pagar" href="{% url 'pago' %}">PAGAR</a>
                     </button>
+
                 </div>
             </div>
         </article>
@@ -61,7 +64,10 @@
                     url: '{% url 'cartAjax'  %}',
                     type: 'POST',
                     data: {id: id, quantity: quantity},
-                    dataType: 'json'
+                    dataType: 'json',
+                    success: function (){document.querySelector('.contar-productos-compra ').innerHTML = '!';
+                    document.querySelector('.pagar-verProducto').classList.remove('ocultar');
+                    }
                 }
             )
         }

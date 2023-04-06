@@ -10,9 +10,10 @@ from SosCombos_Django import settings
 
 class general(SingletonModel):
     nombre = models.CharField(max_length=14, verbose_name='Nombre de la empresa', default='', unique=True)
-    entrega = models.CharField(max_length=50, verbose_name='Tiemp de entrega', default='', unique=True)
     logo = models.ImageField(verbose_name='Logo', upload_to='img/logo/', null=True, blank=True)
+    email = models.EmailField(max_length=100, verbose_name='Correo de pedidos', default='soscombos@gmail.com')
     precio = models.DecimalField(max_digits=6, decimal_places=2, verbose_name='Precio de envio', default=0)
+    entrega = models.CharField(max_length=50, verbose_name='Tiemp de entrega', default='', unique=True)
     id_paypal = models.CharField(max_length=100, verbose_name='Id de Paypal', default='', null=True, blank=True,
                                  unique=True)
 

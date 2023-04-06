@@ -28,14 +28,14 @@
     <!-- ****************************************** -->
     {% if request.session.cart.items %}
         <section class="carrito-lleno-contenedor pagina-secundaria__contenedor justify-center align-center">
-            <h2 class="tusOrdenes">SU CARRITO</h2>
+            <h2 class="tusOrdenes">SU CARRITO
+                {######BOTON DE VACIAR CARRITO########}
+                <img src="{% static 'img/Iconos/icons8-basura-64 (1).png' %}"
+                     class="boton-vaciar"
+                     onclick="document.getElementById('modal-eliminar-carrito').style.display='flex';"
+                     style="border-radius: 6px" aria-hidden="true"></img>
+                {####################################}</h2>
 
-            {######BOTON DE VACIAR CARRITO########}
-            <img src="{% static 'img/Iconos/icons8-basura-64 (1).png' %}"
-                 class="boton-vaciar"
-                 onclick="document.getElementById('modal-eliminar-carrito').style.display='flex';"
-                 style="border-radius: 6px" aria-hidden="true"></img>
-            {####################################}
 
             <article class="contenedor-productos-carrito">
                 {% for key,value in request.session.cart.items %}

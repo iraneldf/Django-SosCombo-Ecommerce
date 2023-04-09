@@ -67,7 +67,7 @@ class productos(models.Model):
     imagen = models.ImageField(verbose_name='Imagen', upload_to='img/productos/')
     nombre = models.CharField(max_length=100, verbose_name='Nombre', default='')
     precio = models.DecimalField(max_digits=6, decimal_places=2, verbose_name='Precio')
-    mejor = models.BooleanField(default=True, verbose_name='Marcar como uno de los mejores productos')
+    mejor = models.BooleanField(default=True, verbose_name='Mejor producto')
     especial = models.BooleanField(default=True, verbose_name='Oferta especial')
     subcategoria = models.ManyToManyField(subCategorias)
     ubicaciones = models.ManyToManyField(ubicaciones)
@@ -77,13 +77,7 @@ class productos(models.Model):
     class Meta:
         verbose_name_plural = '02- Productos'
         verbose_name = 'Producto'
-
-    def __str__(self):
-        if self.activ:
-            result = "Mostrado"
-        else:
-            result = "Sin mostrar"
-        return self.nombre + ' (' + result + ')'
+        ordering = ['nombre']
 
     def toJSON(self):
         item = model_to_dict(self)
@@ -171,6 +165,3 @@ class venta(models.Model):
     class Meta:
         verbose_name_plural = 'Ventas'
         verbose_name = 'Venta'
-
-    def __str__(self):
-        return f" ${self.precio_total} | {self.email}   "

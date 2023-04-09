@@ -161,7 +161,12 @@ class venta(models.Model):
     ciudad = models.CharField(verbose_name='Municipio', max_length=100)
     telefono = models.CharField(verbose_name='Teléfono de quien paga', max_length=30)
     telefono2 = models.CharField(verbose_name='Teléfono de quien recibe', max_length=30)
+    fecha = models.DateTimeField(verbose_name='Hora y fecha', blank=True, null=True)
 
     class Meta:
         verbose_name_plural = 'Ventas'
         verbose_name = 'Venta'
+        ordering = ['-fecha', ]
+
+    def __str__(self):
+        return self.fecha.strftime('%d-%m-%Y') + " | " + self.fecha.strftime(' %H:%M:%S')

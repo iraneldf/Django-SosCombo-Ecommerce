@@ -23,7 +23,23 @@ class GeneralAdmin(SingletonModelAdmin):
 
 
 class VentasAdmin(admin.ModelAdmin):
-    list_display = ('nombre', 'nombre2', 'email', 'precio_total')
+    search_fields = ('nombre',)
+
+
+class UbicacionesAdmin(admin.ModelAdmin):
+    search_fields = ('ubicacion',)
+
+
+class CategorianesAdmin(admin.ModelAdmin):
+    search_fields = ('categoria',)
+
+
+class SubCategorianesAdmin(admin.ModelAdmin):
+    search_fields = ('subcategoria',)
+
+
+class SubscripcionesAdmin(admin.ModelAdmin):
+    search_fields = ('email',)
 
 
 admin.site.register(models.general, GeneralAdmin)
@@ -32,8 +48,8 @@ admin.site.register(models.productos, ProductoAdmin)
 admin.site.register(models.productosDomicilio, SingletonModelAdmin)
 admin.site.register(models.conocenos, SingletonModelAdmin)
 admin.site.register(models.contactenos, SingletonModelAdmin)
-admin.site.register(models.subscripciones)
-admin.site.register(models.categorias)
-admin.site.register(models.subCategorias)
-admin.site.register(models.ubicaciones)
+admin.site.register(models.subscripciones, SubscripcionesAdmin)
+admin.site.register(models.categorias, CategorianesAdmin)
+admin.site.register(models.subCategorias, SubCategorianesAdmin)
+admin.site.register(models.ubicaciones, UbicacionesAdmin)
 admin.site.register(models.venta, VentasAdmin)

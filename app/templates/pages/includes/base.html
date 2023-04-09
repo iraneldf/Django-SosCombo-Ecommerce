@@ -32,6 +32,8 @@
 
     <link href="{% static 'css/modal.css' %}" rel="stylesheet" type="text/css">
 
+    <link href="{% static 'plugins/sweetalert/sweetalert2.css' %}" rel="stylesheet" type="text/css">
+
     {#    extras    #}
 
     {#######################}
@@ -131,18 +133,81 @@
         <div class="pie-pagina__suscribete">
             <h2>SUSCRÍBETE</h2>
 
-            <form action="{% url 'subscribe' %}" method="post">
-                {% csrf_token %}
-                <input class="input-suscribir__email" name="email" type="email" placeholder="Email Address" required>
-                <input class="input-suscribir__submit" type="submit" value="SUSCRÍBETE">
+            <form>
+
+                <input class="input-suscribir__email" id="email" name="email" type="email" placeholder="Email Address"
+                       required>
+                <input onclick="submitWithNotification();" class="input-suscribir__submit" type="button"
+                       value="SUSCRÍBETE">
             </form>
 
         </div>
     </div>
+    <script>
+        function submitWithNotification(e) {
+            let regExp = /^[^@]+@[^@]+$/;
+            console.log(regExp.test(document.querySelector('#email').value))
+            if (regExp.test(document.querySelector('#email').value)) {
+                //función a ejecutar antes de enviar
+                document.getElementById('modal-subscripcion').style.display = 'flex';
+                $.ajax(
+                    {
+                        url: '{% url 'subscribe' %}',
+                        type: 'POST',
+                        data: {
+                            email: document.querySelector('#email').value,
+                        },
+                        dataType: 'json',
+                    })
+            } else {
+                document.getElementById('modal-error').style.display = 'flex';
+                return false
+            }
+        }
 
+    </script>
     <p class="pie-pagina__final">© 2022 {{ general.nombre }}. Developed by GoDjango</p>
 </footer>
+{# Modal de confirmacion   #}
+<style>
+    #modal-subscripcion, #modal-error {
+        flex-direction: column;
+        justify-content: center;
+        padding-top: 0;
+        z-index: 999;
 
+    }
+</style>
+<div id="modal-subscripcion" class="modal">
+    <form class="form-modal-carrito" action="{% url 'index' %}" method="get">
+        {% csrf_token %}
+        <div class="modal-carrito-contenedor">
+            <p>Subscripción realizada con éxito.</p>
+            <div class="btn-modal-carrito-contenedor">
+                <button type="submit"
+                        onclick="document.getElementById('modal-respuesta').style.display='none';"
+                        class="btn-aceptar">Aceptar
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div id="modal-error" class="modal">
+    <div class="form-modal-carrito">
+        {% csrf_token %}
+        <div class="modal-carrito-contenedor">
+            <p>Correo no válido.<br> Se debe inlcuir un signo "@" en la dirección de correo electronico y se debe agregar
+                texto detras de este signo.</p>
+            <div class="btn-modal-carrito-contenedor">
+                <button type="submit"
+                        onclick="document.getElementById('modal-error').style.display='none';"
+                        class="btn-aceptar">Aceptar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 {% block footer %}
 
 {% endblock %}
@@ -189,7 +254,6 @@
 
     </div>
 </div>
-
 {###################LOCALIZACIONES#################################}
 <div class="ubicacion-provincia-modal ocultar-sub-modal">
     <div class="ubicacion-provincia">
@@ -241,6 +305,7 @@
 <script type="text/javascript" src="{% static 'js/annadirCarrito.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/menu.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/filter-table.js' %}"></script>
+<script type="text/javascript" src="{% static 'plugins/sweetalert/sweetalert2.js' %}"></script>
 
 <script>
     {#  COPIAR EN EL CORTAPAPELES  #}

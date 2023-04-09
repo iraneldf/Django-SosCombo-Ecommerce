@@ -1,3 +1,5 @@
+import datetime
+
 from django.core.mail import send_mail
 from django.http import HttpRequest, JsonResponse
 from django.shortcuts import redirect
@@ -9,22 +11,21 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 
 from django.contrib.auth import settings
-from django.utils import timezone
-from datetime import *
+from datetime import datetime
+import pytz
 from django.db import models
 from SosCombos_Django import settings
 from SosCombos_Django.settings import CART_SESSION_ID
 from app import models
-from app.models import subscripciones
 from cart.cart import Cart
 
 
 def send_purchase_mail(lista, nombre, nombre2, email_usuario, telefono, telefono2, direccion, total):
-    titulo = 'Nueva compra en ' + models.general.objects.first().nombre + '.'
+    titulo = 'Nueva compra en ' + models.general.objects.first().nombre + "  " + '.'
     mensaje = 'Nueva compra, datos de compra: \n \nNombre de quien paga: ' + nombre + ';\n' + '\nNombre de quien recibe: ' + nombre2 + ';\n' + '\nCorreo: ' + email_usuario + ';\n' + '\nTeléfono de quien paga: ' + telefono + ';\n' + '\nTeléfono de quien recibe: ' + telefono2 + ';\n' + '\nDirección: ' + direccion + ';\n' + '\nLista de Compra: ' + '\n' + lista + ';\n' + '\nPrecio total: ' + total + '.'
     host = settings.EMAIL_HOST_USER
     destinatario = [models.general.objects.first().email]
-    print(mensaje)
+
     send_mail(titulo, mensaje, host, destinatario)
 
 
@@ -107,7 +108,6 @@ class Index(generic.TemplateView):
         context['conocenos'] = models.conocenos.objects.first()
         context['contactenos'] = models.contactenos.objects.first()
         context['carrusel'] = models.carrusel.objects.all()
-        context['fecha'] = datetime.now()
 
         return context
 
@@ -115,7 +115,7 @@ class Index(generic.TemplateView):
 class Productos(ListView):
     template_name = 'pages/productos.html'
     queryset = models.productos.objects.filter(activ=True).order_by('precio')
-    paginate_by = 9
+    paginate_by = 50
     context_object_name = 'productos'
 
     def get_queryset(self):
@@ -235,11 +235,10 @@ class Carrito(generic.TemplateView):
         return context
 
 
-@require_POST
+@method_decorator(csrf_exempt, require_POST)
 def Subscribe(request):
     subs = models.subscripciones(email=request.POST["email"])
     subs.save()
-    return redirect('index')
 
 
 class Pago(generic.TemplateView):
@@ -345,12 +344,13 @@ def registar_venta(request: HttpRequest):
     provincia = request.POST['country']
     municipio = request.POST['city']
     address = request.POST['address']
+    fecha = datetime.now(pytz.utc).astimezone(pytz.timezone('America/Havana'))
 
     newventa = models.venta(lista=lista, precio_total=total_price, nombre=name, nombre2=name2, email=email,
                             direccion=address, ciudad=municipio,
-                            pais=provincia, telefono=phone, telefono2=phone2)
+                            pais=provincia, telefono=phone, telefono2=phone2, fecha=fecha)
     newventa.save()
-
+    print(JsonResponse)
     return JsonResponse({"result": "ok", })
 
 

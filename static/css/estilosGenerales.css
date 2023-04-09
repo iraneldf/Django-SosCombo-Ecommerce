@@ -55,3 +55,7 @@ input {
 .invertir {
   transform: rotate(180deg);
 }
+
+.d-none{
+  display: none;
+}

@@ -16,8 +16,6 @@
     <section class="mejores-productos__contenedor p-10 p-60-vertical">
         <h2 class="mejoresProductosTexto">LOS <span style="font-weight: 900">MEJORES  PRODUCTOS</span> A SU DISPOSICIÓN
         </h2>
-        {{ fecha }}
-
         <div class="visitar-productos">
             <a href="{% url 'productos' %}">Ver todos</a>
             <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000">
@@ -25,8 +23,7 @@
                 <path d="M10 17l5-5-5-5v10z"/>
             </svg>
         </div>
-        {% include 'pages/includes/productos/MejoresProductosContenedor.html' %}
-
+                {% include 'pages/includes/productos/MejoresProductosContenedor.html' %}
         <div class="btn-ver-mas__contenedor">
 
             <a type="button" class="btn-ver-mas__inicie-compra btn-verMas" href="{% url 'productos' %}">VER MÁS</a>
@@ -41,7 +38,6 @@
             <p>{{ domicilio.texto }}</p>
         </div>
     </section>
-
     {######################OFERTAS ESPECIALES##############################################}
 
 
@@ -56,6 +52,7 @@
 {% endblock %}
 
 {% block ExtrasJS %}
+    <script src="{% static 'js/mostrar-ocultar btn annadir.js' %}"></script>
     <script>
         function hola(e) {
             console.log(e)

@@ -3,15 +3,42 @@
 {% block css %}
     <link href="{% static 'css/paginasSecundarias.css' %}" rel="stylesheet" type="text/css">
     <link href="{% static 'css/modalTusOrdenes.css' %}" rel="stylesheet" type="text/css">
-    <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" type="text/css">
+    <style>
+        #modal-respuesta {
+            flex-direction: column;
+            justify-content: center;
+            padding-top: 0;
+            z-index: 999;
+
+        }
+    </style>
 {% endblock %}
 {% block content %}
     {% include 'pages/includes/pago/formularioClasico.html' %}
 {% endblock %}
 
+
+{% block footer %}
+    {# Modal de confirmacion   #}
+    <div id="modal-respuesta" class="modal">
+        <form class="form-modal-carrito" action="{% url 'index' %}" method="get">
+            {% csrf_token %}
+            <div class="modal-carrito-contenedor">
+                <p>Pedido realizado con éxito.
+                    Recuerde que el tiempo de entrega es {{ general.entrega }}</p>
+                <div class="btn-modal-carrito-contenedor">
+                    <button type="submit"
+                            onclick="document.getElementById('modal-respuesta').style.display='none';"
+                            class="btn-aceptar">Aceptar
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+
 {% block ExtrasJS %}
 
-    <script src="{% static 'js/bootstrap.js' %}"></script>
     <script>
 
 
@@ -25,7 +52,7 @@
         function multiply() {
             {% for key,value in request.session.cart.items %}
                 result = parseFloat({{ value.quantity|safe }}) * parseFloat({{ value.product.precio|safe  }});
-                document.getElementById("resultado{{ value.product.id }}").innerHTML = result.toFixed(2);
+                document.getElementById("resultado{{ value.product.id }}").innerHTML = parseFloat(result).toFixed(2);
             {% endfor %}
         }
 

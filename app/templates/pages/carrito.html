@@ -163,125 +163,127 @@
 {% endblock %}
 
 {% block ExtrasJS %}
+    {% if request.session.cart.items %}
+        <script>
 
-    <script>
 
+            window.addEventListener('load', multiply)
+            window.addEventListener('load', total_sum)
 
-        window.addEventListener('load', multiply)
-        window.addEventListener('load', total_sum)
+            var result = 0
+            var asd = 0
 
-        var result = 0
-        var asd = 0
+            function multiply() {
+                {% for key,value in request.session.cart.items %}
+                    result = parseFloat({{ value.quantity }}) * parseFloat({{ value.product.precio }});
+                    {#document.getElementById("resultado{{ value.product.id }}").innerHTML = result.toFixed(2);#}
+                {% endfor %}
+            }
 
-        function multiply() {
-            {% for key,value in request.session.cart.items %}
-                result = parseFloat({{ value.quantity }}) * parseFloat({{ value.product.precio }});
-                {#document.getElementById("resultado{{ value.product.id }}").innerHTML = result.toFixed(2);#}
-            {% endfor %}
-        }
+            function total_sum() {
+                let sum = 0
+                {% for key,value in request.session.cart.items %}
+                    asd = parseFloat({{ value.quantity }}) * parseFloat({{ value.product.precio|safe }})
+                    sum = sum + asd;
+                {% endfor %}
+                document.getElementById("subtotal").innerHTML = "$" + sum.toFixed(2);
+                document.getElementById("total").innerHTML = "$" + (sum + parseFloat({{  general.precio|safe }})).toFixed(2);
+                return parseFloat(sum + parseFloat({{ general.precio|safe }}))
+            }
 
-        function total_sum() {
-            let sum = 0
-            {% for key,value in request.session.cart.items %}
-                asd = parseFloat({{ value.quantity }}) * parseFloat({{ value.product.precio|safe }})
-                sum = sum + asd;
-            {% endfor %}
-            document.getElementById("subtotal").innerHTML = "$" + sum.toFixed(2);
-            document.getElementById("total").innerHTML = "$" + (sum + parseFloat({{  general.precio|safe }})).toFixed(2);
-            return parseFloat(sum + parseFloat({{ general.precio|safe }}))
-        }
+            function aumentar(id) {
+                $.ajax(
+                    {
+                        url: '{% url 'cart_add' %}',
+                        type: 'POST',
+                        data: {id: id},
+                        dataType: 'json',
+                        success: pintarAumentar(id)
+                    }
+                )
 
-        function aumentar(id) {
-            $.ajax(
-                {
-                    url: '{% url 'cart_add' %}',
-                    type: 'POST',
-                    data: {id: id},
-                    dataType: 'json',
-                    success: pintarAumentar(id)
-                }
-            )
+            }
 
-        }
-
-        function pintarAumentar(id) {
-            let mult = 0, cant, precio, total = 0;
-            {% for key,value in request.session.cart.items %}
-                precio = {{ value.product.precio|safe }};
-                if (id === {{ value.product.id }}) {
-                    cant = document.querySelector('.id{{ value.product.id }}').innerHTML;
-                    cant = parseFloat(cant) + 1;
-                } else {
-                    cant = document.querySelector('.id{{ value.product.id }}').innerHTML;
-                }
-
-                mult = parseFloat(cant) * parseFloat(precio);
-                total = total + mult;
-
-            {% endfor %}
-            document.getElementById("subtotal").innerHTML = "$" + total.toFixed(2);
-            document.getElementById("total").innerHTML = "$" + (total + parseFloat({{  general.precio|safe }})).toFixed(2);
-
-        }
-
-        function disminuir(id) {
-            $.ajax(
-                {
-                    url: '{% url 'cart_remove' %}',
-                    type: 'POST',
-                    data: {id: id},
-                    dataType: 'json',
-                    success: pintarDisminuir(id)
-                }
-            )
-
-        }
-
-        function pintarDisminuir(id) {
-            let q = parseInt(document.querySelector('.id' + id).innerHTML);
-
-            if (q !== 1) {
+            function pintarAumentar(id) {
                 let mult = 0, cant, precio, total = 0;
                 {% for key,value in request.session.cart.items %}
                     precio = {{ value.product.precio|safe }};
                     if (id === {{ value.product.id }}) {
-
                         cant = document.querySelector('.id{{ value.product.id }}').innerHTML;
-                        cant = parseFloat(cant) - 1;
+                        cant = parseFloat(cant) + 1;
                     } else {
-
                         cant = document.querySelector('.id{{ value.product.id }}').innerHTML;
                     }
+
                     mult = parseFloat(cant) * parseFloat(precio);
                     total = total + mult;
-                {% endfor %}
 
+                {% endfor %}
                 document.getElementById("subtotal").innerHTML = "$" + total.toFixed(2);
                 document.getElementById("total").innerHTML = "$" + (total + parseFloat({{  general.precio|safe }})).toFixed(2);
 
             }
 
-        }
+            function disminuir(id) {
+                $.ajax(
+                    {
+                        url: '{% url 'cart_remove' %}',
+                        type: 'POST',
+                        data: {id: id},
+                        dataType: 'json',
+                        success: pintarDisminuir(id)
+                    }
+                )
 
-
-        function eliminar(id) {
-            $.ajax(
-                {
-                    url: '{% url 'cart_clear_id' %}',
-                    type: 'POST',
-                    data: {id: id},
-                    dataType: 'json'
-                }
-            )
-            location.reload();
-
-        }
-
-        function mostrarMoldalEliminar(idModal, claseContador) {
-            if (document.querySelector(claseContador).textContent == 1) {
-                document.querySelector(claseContador).textContent = 2
-                document.querySelector(idModal).style.display = 'flex';
             }
-        }
-    </script>
+
+            function pintarDisminuir(id) {
+                let q = parseInt(document.querySelector('.id' + id).innerHTML);
+
+                if (q !== 1) {
+                    let mult = 0, cant, precio, total = 0;
+                    {% for key,value in request.session.cart.items %}
+                        precio = {{ value.product.precio|safe }};
+                        if (id === {{ value.product.id }}) {
+
+                            cant = document.querySelector('.id{{ value.product.id }}').innerHTML;
+                            cant = parseFloat(cant) - 1;
+                        } else {
+
+                            cant = document.querySelector('.id{{ value.product.id }}').innerHTML;
+                        }
+                        mult = parseFloat(cant) * parseFloat(precio);
+                        total = total + mult;
+                    {% endfor %}
+
+                    document.getElementById("subtotal").innerHTML = "$" + total.toFixed(2);
+                    document.getElementById("total").innerHTML = "$" + (total + parseFloat({{  general.precio|safe }})).toFixed(2);
+
+                }
+
+            }
+
+
+            function eliminar(id) {
+                $.ajax(
+                    {
+                        url: '{% url 'cart_clear_id' %}',
+                        type: 'POST',
+                        data: {id: id},
+                        dataType: 'json'
+                    }
+                )
+                location.reload();
+
+            }
+
+            function mostrarMoldalEliminar(idModal, claseContador) {
+                if (document.querySelector(claseContador).textContent == 1) {
+                    document.querySelector(claseContador).textContent = 2
+                    document.querySelector(idModal).style.display = 'flex';
+                }
+            }
+        </script>
+
+    {% endif %}
 {% endblock %}

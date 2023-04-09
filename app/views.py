@@ -20,21 +20,12 @@ from cart.cart import Cart
 
 
 def send_purchase_mail(lista, nombre, nombre2, email_usuario, telefono, telefono2, direccion, total):
-    destinatarios = [models.general.objects.first().email]
-    send_mail(
-        'Nueva compra en ' + models.general.objects.first().nombre + '.\n',
-        'Nueva compra, datos de compra:\nNombre de quien paga:  ' + nombre + ';\n' +
-        '\nNombre de quien recibe: ' + nombre2 + ';\n' +
-        '\nCorreo: ' + email_usuario + ';\n' +
-        '\nTeléfono de quien paga: ' + telefono + ';\n' +
-        '\nTeléfono de quien recibe: ' + telefono2 + ';\n' +
-        '\nDirección: ' + direccion + ';\n' +
-        '\nLista de Compra: ' + '\n' + lista + ';\n' +
-        '\nPrecio total: ' + total +
-        '.',
-        settings.EMAIL_HOST_USER,
-        destinatarios,
-    )
+    titulo = 'Nueva compra en ' + models.general.objects.first().nombre + '.'
+    mensaje = 'Nueva compra, datos de compra: \n \nNombre de quien paga: ' + nombre + ';\n' + '\nNombre de quien recibe: ' + nombre2 + ';\n' + '\nCorreo: ' + email_usuario + ';\n' + '\nTeléfono de quien paga: ' + telefono + ';\n' + '\nTeléfono de quien recibe: ' + telefono2 + ';\n' + '\nDirección: ' + direccion + ';\n' + '\nLista de Compra: ' + '\n' + lista + ';\n' + '\nPrecio total: ' + total + '.'
+    host = settings.EMAIL_HOST_USER
+    destinatario = [models.general.objects.first().email]
+    print(mensaje)
+    send_mail(titulo, mensaje, host, destinatario)
 
 
 def get_qs(self, qs):
@@ -295,6 +286,13 @@ def cart_clear(request: HttpRequest):
     return redirect('carrito')
 
 
+# Cleaning the cart redirect index
+@method_decorator(csrf_exempt, require_POST)
+def cart_clearIndex(request: HttpRequest):
+    Cart(request).clear()
+    return redirect('index')
+
+
 # Remove all elements of a type from cart
 @method_decorator(csrf_exempt, require_POST)
 def item_clear(request: HttpRequest):
@@ -353,8 +351,7 @@ def registar_venta(request: HttpRequest):
                             pais=provincia, telefono=phone, telefono2=phone2)
     newventa.save()
 
-    return JsonResponse({"result": "ok",
-                         })
+    return JsonResponse({"result": "ok", })
 
 
 # nuevo correo de compra
@@ -368,4 +365,5 @@ def new_purchase_mail(request: HttpRequest):
     telefono2 = request.POST['phone2']
     direccion = request.POST['address']
     total = request.POST['total']
+
     send_purchase_mail(lista, nombre, nombre2, email_remitente, telefono, telefono2, direccion, total)

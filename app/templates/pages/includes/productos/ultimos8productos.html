@@ -1,12 +1,13 @@
+{% load static %}
 {% for p in listado_ultimos_8_productos %}
     <div class="plantilla-producto">
         <div class="producto">
             <a class="mostrar-producto" href="{% url 'VerProductos' p.id %}">
                 <img class="foto-producto" alt="foto producto" src="{{ p.imagen.url }}"
-                     style="width: 160px; height: 160px">
+                     style="width: 90%; height: 160px">
             </a>
             <div class="nombre-precio-producto ">
-                <h4>{{ p.nombre }}</h4>
+                <h4 class="nombre">{{ p.nombre }}///{{ p.cantventas }}</h4>
                 <p>{{ p.precio }}</p>
             </div>
 
@@ -25,10 +26,10 @@
             >
                 AÑADIR
             </button>
-            <button
+            <button id="pbtnid{{ p.id }}"
                     onclick="addCarrito({{ p.id }},
                             document.querySelector('.id{{ p.id }}').textContent);
-                            document.querySelector('.annadir-carrito carrito__comprar-mas').classList.add('animate')"
+                            document.querySelector('.annadir-carrito').classList.add('animate')"
                     class="annadir-carrito carrito__comprar-mas" type="button"></button>
         </div>
 
@@ -49,28 +50,6 @@
         )
     }
 
-    {#OCULTAR Y MOSTRAR EL BOTON ANNADIR#}
-    window.addEventListener('click', (e) => {
-            if (e.composedPath()[0].classList[0] == 'btn-contar') {
-                const botonAnnadir = document.querySelector(`#btn${e.composedPath()[0].id}`);
-                const contenedor = document.querySelector(`.${e.composedPath()[0].id}`);
-
-                botonAnnadir.classList.remove('ocultar');
-
-                if (e.composedPath()[0].classList[1] == 'restar') {
-                    if (contenedor.textContent == 1 || contenedor.textContent == 0) {
-                        botonAnnadir.classList.add('ocultar')
-                    }
-                } else if (e.composedPath()[0].classList[1] == 'sumar') {
-                    if (contenedor.textContent != 0) {
-                        botonAnnadir.classList.remove('ocultar')
-                    }
-                }
-
-
-            }
-        }
-    )
-    ;
 </script>
+<script src="{% static 'js/mostrar-ocultar btn annadir.js' %}"></script>
 

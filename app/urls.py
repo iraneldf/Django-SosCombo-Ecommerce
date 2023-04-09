@@ -26,6 +26,7 @@ urlpatterns += [
     path("cart/add/", add, name="cart_add"),
     path("cart/remove/", remove, name="cart_remove"),
     path("cart/clear/", cart_clear, name="cart_clear"),
+    path("cart/clearIndex/", cart_clearIndex, name="cart_clearIndex"),
     path("cart/clear/id", item_clear, name="cart_clear_id"),
     path("cart/cartAjax/", add_n_productos, name="cartAjax"),
     # path("cart/details/<id>/", cart_detail, name="cart_details"),

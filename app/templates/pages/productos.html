@@ -81,7 +81,6 @@
             )
         }
 
-        const btnA = document.querySelector('.btn-aseo__categorias-escritorio');
         {% for cat in categorias %}
             const btn{{ cat.id }} = document.querySelector('.btn_{{ cat.id }}');
         {% endfor %}
@@ -96,8 +95,6 @@
             btn{{ cat.id }}.addEventListener('click', () => setCategoryMenu(btn{{ cat.id }}, '._{{cat.id}}categorias'));
         {% endfor %}
 
-        btnA.addEventListener('click', () => setCategoryMenu(btnA, '.aseo__categorias-escritorio'));
-
     </script>
     <script src="{% static 'js/filter-table.js' %}"></script>
 
@@ -109,7 +106,7 @@
         })(jQuery);
 
     </script>
-
+<script src="{% static 'js/menuProductos.js' %}"></script>
 {% endblock %}
 
 

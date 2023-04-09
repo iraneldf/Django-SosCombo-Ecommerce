@@ -1,28 +1,37 @@
 <section class="pago-contenedor pagina-secundaria__contenedor">
-    <h3>DETALLES DEL ENVÍO</h3>
+    <h2>DETALLES DEL ENVÍO</h2>
 
     <form action="#" class="form-pago">
         <label for="first-name-input"><p>Nombre y Apellidos de quien paga</p></label>
         <input id="first-name-input" class="input-simple" type="text" required>
         <p id="error1" style="color:red;" class="d-none error">Debe completar el nombre</p>
+        <p id="error12" style="color:red;" class="d-none error">El nombre no debe contener números</p>
+
         <label for="first-name-input2"><p>Nombre y Apellidos de quien recibe</p></label>
         <input id="first-name-input2" class="input-simple" type="text" required>
         <p id="error11" style="color:red;" class="d-none error">Debe completar el nombre</p>
+        <p id="error112" style="color:red;" class="d-none error">El nombre no debe contener números</p>
+
         <label for="email-input"><p>Correo electrónico</p></label>
         <input id="email-input" class="input-simple" type="email" required>
         <p id="error2" style="color:red;" class="d-none error">Correo no válido</p>
+
         <label for="phone-input"><p>Teléfono de quien paga</p></label>
         <input id="phone-input" class="input-simple" type="tel" required>
         <p id="error3" style="color:red;" class="d-none error">Debe completar el teléfono</p>
+
         <label for="phone-input2"><p>Teléfono de quien recibe</p></label>
         <input id="phone-input2" class="input-simple" type="tel" required>
         <p id="error31" style="color:red;" class="d-none error">Debe completar el teléfono</p>
+
         <label for="country-input"><p>Provincia</p></label>
         <input id="country-input" class="input-simple" type="text" required>
         <p id="error4" style="color:red;" class="d-none error">Debe especificar la provincia</p>
+
         <label for="city-input"><p>Municipio</p></label>
         <input id="city-input" class="input-simple" type="text" required>
         <p id="error5" style="color:red;" class="d-none error">Debe especificar el municipio</p>
+
         <label for="address-input"><p>Dirección de quien recibe</p></label>
         <input id="address-input" class="input-simple" type="text" required>
         <p id="error6" style="color:red;" class="d-none error">Debe especificar la dirección</p>
@@ -41,38 +50,16 @@
 
         </div>
 
+        <h3>Seleccione forma de pago: </h3>
+        <h4>Pagar al recibir</h4>
 
-        {#            <input type="submit" value="PAGAR" class="btnPagar-submit">#}
-        {##}
-        {#            <!-- botones de paypal -->#}
-        {#            <div id="paypal-button-container"></div>#}
-        <h4>Seleccione forma de pago</h4>
-        <ul class="nav nav-tabs" id="myTab" role="tablist">
-            <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="home-tab" data-bs-toggle="tab"
-                        data-bs-target="#home-tab-pane"
-                        type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Pagar al
-                    recibir
-                </button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="profile-tab" data-bs-toggle="tab"
-                        data-bs-target="#profile-tab-pane"
-                        type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Pagar con
-                    paypal
-                </button>
-            </li>
-        </ul>
-        <div class="tab-content" id="myTabContent">
-            <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab"
-                 tabindex="0"><input onclick="enviarform()" style="margin-top: 10px" type="button" value="HACER PEDIDO"
-                                     class="btnPagar-submit">
-            </div>
-            <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab"
-                 tabindex="0"><!-- botones de paypal -->
-                <div style="margin-bottom: 54px;margin-top: 10px" id="paypal-button-container"></div>
-            </div>
-        </div>
+        <input onclick="enviarform()" style="margin-top: 10px" type="button" value="HACER PEDIDO"
+               class="btnPagar-submit">
+
+        <h4>Pagar con PAYPAL</h4>
+        <!-- botones de paypal -->
+        <div style="    margin-bottom: 54px;margin-top: 10px" id="paypal-button-container"></div>
+
     </form>
     <script
             src="https://www.paypal.com/sdk/js?client-id={{ general.id_paypal|safe }}&locale=es_ES&currency=USD"></script>
@@ -87,7 +74,8 @@
         let city = document.getElementById('city-input')
         let address = document.getElementById('address-input')
         let aceptar = document.getElementById('aceptar')
-        let emailvalid = /^[^@]+@[^@]+/;
+        let emailvalid = /^[^@]+@[^@]+\.[a-zA-Z]{1,}$/;
+        let nombrevalid = /^([^0-9]*)$/;
         let lista = '';
         {% for key,value in request.session.cart.items %}
             lista += '{% if not forloop.first %}\n {% endif %} .{{value.product.nombre}} '
@@ -121,14 +109,24 @@
 
         function validar() {
 
-            if (nombre.value.length < 1) {
+            if (nombre.value.length === 0) {
                 $('.error').addClass('d-none')
                 document.querySelector('#error1').classList.remove('d-none');
                 nombre.focus()
 
-            } else if (nombre2.value.length < 1) {
+            } else if (!nombrevalid.test(nombre.value)) {
+                $('.error').addClass('d-none')
+                document.querySelector('#error12').classList.remove('d-none');
+                nombre.focus()
+
+            } else if (nombre2.value.length === 0) {
                 $('.error').addClass('d-none')
                 document.querySelector('#error11').classList.remove('d-none');
+                nombre2.focus()
+
+            } else if (!nombrevalid.test(nombre2.value)) {
+                $('.error').addClass('d-none')
+                document.querySelector('#error112').classList.remove('d-none');
                 nombre2.focus()
 
             } else if (!emailvalid.test(email.value)) {
@@ -136,24 +134,24 @@
                 document.querySelector('#error2').classList.remove('d-none');
                 email.focus()
 
-            } else if (phone.value.length < 1) {
+            } else if (phone.value.length === 0) {
                 $('.error').addClass('d-none')
                 document.querySelector('#error3').classList.remove('d-none');
                 phone.focus()
 
-            } else if (phone2.value.length < 1) {
+            } else if (phone2.value.length === 0) {
                 $('.error').addClass('d-none')
                 document.querySelector('#error31').classList.remove('d-none');
                 phone2.focus()
-            } else if (country.value.length < 1) {
+            } else if (country.value.length === 0) {
                 $('.error').addClass('d-none')
                 document.querySelector('#error4').classList.remove('d-none');
                 country.focus()
-            } else if (city.value.length < 1) {
+            } else if (city.value.length === 0) {
                 $('.error').addClass('d-none')
                 document.querySelector('#error5').classList.remove('d-none');
                 city.focus()
-            } else if (address.value.length < 1) {
+            } else if (address.value.length === 0) {
                 $('.error').addClass('d-none')
                 document.querySelector('#error6').classList.remove('d-none');
                 address.focus()
@@ -196,6 +194,10 @@
                             address: document.getElementById('address-input').value,
                         },
                         dataType: 'json',
+                        success: () => {
+                            document.getElementById('modal-respuesta').style.display = 'flex';
+                            $.post('{% url 'cart_clearIndex' %}');
+                        }
 
                     })
                 {#####################MANDAR EMAIL############################}
@@ -213,9 +215,8 @@
                             address: document.getElementById('address-input').value,
                             total: total_sum(),
                         },
-                        dataType: 'json'
+                        dataType: 'json',
                     })
-                location.reload()
             }
         }
 
@@ -247,14 +248,14 @@
                     .addEventListener('change', valid);
 
                 function valid() {
-                    let flag = nombre.value.length > 1 &&
-                        nombre2.value.length > 1 &&
+                    let flag = nombre.value.length !== 0 && nombrevalid.test(nombre.value) &&
+                        nombre2.value.length !== 0 && nombrevalid.test(nombre2.value) &&
                         emailvalid.test(email.value) &&
-                        phone.value.length > 1 &&
-                        phone2.value.length > 1 &&
-                        city.value.length > 1 &&
-                        country.value.length > 1 &&
-                        address.value.length > 1 &&
+                        phone.value.length !== 0 &&
+                        phone2.value.length !== 0 &&
+                        city.value.length !== 0 &&
+                        country.value.length !== 0 &&
+                        address.value.length !== 0 &&
                         aceptar.checked;
                     console.log(flag)
                     if (flag) {
@@ -271,14 +272,24 @@
             onClick() {
 
                 // Show a validation error if the checkbox is not checked
-                if (nombre.value.length < 1) {
+                if (nombre.value.length === 0) {
                     $('.error').addClass('d-none')
                     document.querySelector('#error1').classList.remove('d-none');
                     nombre.focus()
 
-                } else if (nombre2.value.length < 1) {
+                } else if (!nombrevalid.test(nombre.value)) {
+                    $('.error').addClass('d-none')
+                    document.querySelector('#error12').classList.remove('d-none');
+                    nombre.focus()
+
+                } else if (nombre2.value.length === 0) {
                     $('.error').addClass('d-none')
                     document.querySelector('#error11').classList.remove('d-none');
+                    nombre2.focus()
+
+                } else if (!nombrevalid.test(nombre2.value)) {
+                    $('.error').addClass('d-none')
+                    document.querySelector('#error112').classList.remove('d-none');
                     nombre2.focus()
 
                 } else if (!emailvalid.test(email.value)) {
@@ -286,30 +297,27 @@
                     document.querySelector('#error2').classList.remove('d-none');
                     email.focus()
 
-                } else if (phone.value.length < 1) {
+                } else if (phone.value.length === 0) {
                     $('.error').addClass('d-none')
                     document.querySelector('#error3').classList.remove('d-none');
                     phone.focus()
-                } else if (phone2.value.length < 1) {
+
+                } else if (phone2.value.length === 0) {
                     $('.error').addClass('d-none')
                     document.querySelector('#error31').classList.remove('d-none');
                     phone2.focus()
-
-                } else if (country.value.length < 1) {
+                } else if (country.value.length === 0) {
                     $('.error').addClass('d-none')
                     document.querySelector('#error4').classList.remove('d-none');
                     country.focus()
-
-                } else if (city.value.length < 1) {
+                } else if (city.value.length === 0) {
                     $('.error').addClass('d-none')
                     document.querySelector('#error5').classList.remove('d-none');
                     city.focus()
-
-                } else if (address.value.length < 1) {
+                } else if (address.value.length === 0) {
                     $('.error').addClass('d-none')
                     document.querySelector('#error6').classList.remove('d-none');
                     address.focus()
-
                 } else if (!aceptar.checked) {
                     $('.error').addClass('d-none')
                     document.querySelector('#error7').classList.remove('d-none');
@@ -351,42 +359,45 @@
                     {% endfor %}
                     {#####################REGISTRAR LA VENTA############################}
                     $.ajax(
-                        {
-                            url: '{% url 'registar_venta' %}',
-                            type: 'POST',
-                            data: {
-                                lista: lista,
-                                total_price: total_sum(),
-                                name: document.getElementById('first-name-input').value,
-                                name2: document.getElementById('first-name-input2').value,
-                                email: document.getElementById('email-input').value,
-                                phone: document.getElementById('phone-input').value,
-                                phone2: document.getElementById('phone-input2').value,
-                                country: document.getElementById('country-input').value,
-                                city: document.getElementById('city-input').value,
-                                address: document.getElementById('address-input').value,
-                            },
-                            dataType: 'json',
+                    {
+                        url: '{% url 'registar_venta' %}',
+                        type: 'POST',
+                        data: {
+                            lista: lista,
+                            total_price: total_sum(),
+                            name: document.getElementById('first-name-input').value,
+                            name2: document.getElementById('first-name-input2').value,
+                            email: document.getElementById('email-input').value,
+                            phone: document.getElementById('phone-input').value,
+                            phone2: document.getElementById('phone-input2').value,
+                            country: document.getElementById('country-input').value,
+                            city: document.getElementById('city-input').value,
+                            address: document.getElementById('address-input').value,
+                        },
+                        dataType: 'json',
+                        success: () => {
+                            document.getElementById('modal-respuesta').style.display = 'flex';
+                            $.post('{% url 'cart_clearIndex' %}');
+                        }
 
-                        })
+                    })
                     {#####################MANDAR EMAIL############################}
                     $.ajax(
-                        {
-                            url: '{% url 'venta_mail' %}',
-                            type: 'POST',
-                            data: {
-                                lista: lista,
-                                name: document.getElementById('first-name-input').value,
-                                name2: document.getElementById('first-name-input2').value,
-                                email: document.getElementById('email-input').value,
-                                phone: document.getElementById('phone-input').value,
-                                phone2: document.getElementById('phone-input2').value,
-                                address: document.getElementById('address-input').value,
-                                total: total_sum(),
-                            },
-                            dataType: 'json'
-                        })
-                location.reload();
+                    {
+                        url: '{% url 'venta_mail' %}',
+                        type: 'POST',
+                        data: {
+                            lista: lista,
+                            name: document.getElementById('first-name-input').value,
+                            name2: document.getElementById('first-name-input2').value,
+                            email: document.getElementById('email-input').value,
+                            phone: document.getElementById('phone-input').value,
+                            phone2: document.getElementById('phone-input2').value,
+                            address: document.getElementById('address-input').value,
+                            total: total_sum(),
+                        },
+                        dataType: 'json',
+                    })
                 });
 
             }

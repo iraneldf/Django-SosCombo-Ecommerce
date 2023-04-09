@@ -2,6 +2,14 @@
 {% load static %}
 {% block css %}
     <link href="{% static 'css/paginasSecundarias.css' %}" rel="stylesheet" type="text/css">
+    <style>
+        .btn-contarV {
+            font-size: 22px;
+            font-weight: 900;
+            background: transparent;
+            cursor: pointer;
+        }
+    </style>
 {% endblock %}
 {% block content %}
 
@@ -16,25 +24,27 @@
                         <p>$ {{ object.precio }}</p>
                     </div>
                     <div class="contar-producto">
-                        <button class="btn-contar restar" id="platano" type="button">&minus;</button>
+                        <button class="btn-contarV restar" id="platano" type="button">&minus;</button>
                         <div id="contador" class="platano">1</div>
-                        <button class="btn-contar sumar" id="platano" type="button">&plus;</button>
+                        <button class="btn-contarV sumar" id="platano" type="button">&plus;</button>
                     </div>
                 </div>
                 <!-- Ver detalles ***************************************************************************************
                 ***********************************
             ******************************** -->
-
                 <p class="tiempo-entrega__producto">Tiempo de entrega: {{ general.entrega }}</p>
                 <div class="annadir-carro__pagar">
                     <button class="annadir-carro" id="botonAnnadir" type="button"
                             onclick="addCarrito({{ object.id }},
                                     document.querySelector('#contador').textContent)">AÑADIR
                     </button>
+                    <form action="{% url 'pago' %}" method="get">
+                        <button {% if not request.session.cart.items %}disabled{% endif %} type="submit"
+                                class="pagar-verProducto"
+                                id="botonPagar">PAGAR
+                        </button>
+                    </form>
 
-                    <button class="pagar-verProducto   {% if not request.session.cart.items %} ocultar {% endif %}"
-                            id="botonPagar"><a class="pagar" href="{% url 'pago' %}">PAGAR</a>
-                    </button>
 
                 </div>
             </div>
@@ -65,38 +75,37 @@
                     type: 'POST',
                     data: {id: id, quantity: quantity},
                     dataType: 'json',
-                    success: function (){document.querySelector('.contar-productos-compra ').innerHTML = '!';
-                    document.querySelector('.pagar-verProducto').classList.remove('ocultar');
+                    success: function () {
+                        document.querySelector('.contar-productos-compra ').innerHTML = '!';
+                        document.querySelector('.pagar-verProducto').disabled = false;
+                        console.log(document.querySelector('.pagar-verProducto'))
                     }
                 }
             )
         }
 
-        {#OCULTAR Y MOSTRAR EL BOTON ANNADIR#}
+        // Para sumar los productos
         window.addEventListener('click', (e) => {
-                if (e.composedPath()[0].classList[0] == 'btn-contar') {
-                    const botonAnnadir = document.querySelector('#botonAnnadir');
-                    const botonPagar = document.querySelector('#botonPagar');
-                    const contenedor = document.querySelector('#contador');
-
-                    botonAnnadir.classList.remove('ocultar');
-
-                    if (e.composedPath()[0].classList[1] == 'restar') {
-                        if (contenedor.textContent == 1 || contenedor.textContent == 0) {
-                            botonAnnadir.classList.add('ocultar')
-                            botonPagar.classList.add('ocultar')
-                        }
-                    } else if (e.composedPath()[0].classList[1] == 'sumar') {
-                        if (contenedor.textContent != 0) {
-                            botonAnnadir.classList.remove('ocultar')
-                            botonPagar.classList.remove('ocultar')
-                        }
+            if (e.composedPath()[0].classList[0] == 'btn-contarV') {
+                const contenedor = document.querySelector(`.${e.composedPath()[0].id}`);
+                let valor = parseFloat(contenedor.innerText);
+                if (e.composedPath()[0].classList[1] == 'restar') {
+                    if (valor > 1) {
+                        valor--;
                     }
-
-
+                } else if (e.composedPath()[0].classList[1] == 'sumar') {
+                    valor++;
                 }
+                contenedor.innerHTML = valor;
             }
-        )
-        ;
+            if (e.composedPath()[0].classList[0] == 'annadir-carrito' || e.composedPath()[0].classList == 'annadir-carro') {
+                contadorProductoContenedor.classList.remove('ocultar');
+
+            }
+
+        });
+
     </script>
+
+
 {% endblock %}
